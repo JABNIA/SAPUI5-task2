@@ -1,6 +1,43 @@
 <mvc:View controllerName="project1.controller.Main"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">
-    <Page id="page" title="{i18n>title}">
-    </Page>
+    <Table
+    id="bookTable"
+    items="{
+        path: 'bookData>/books',
+        sorter: {
+            path: 'id'
+        }
+    }"
+    >
+        <headerToolbar>
+            <Toolbar>
+                <Title text="Book List"/>
+            </Toolbar>
+        </headerToolbar>
+        <columns>
+            <Column>
+                <Text text="Name"/>
+            </Column>
+            <Column>
+                <Text text="Author"/>
+            </Column>
+            <Column>
+                <Text text="Genre"/>
+            </Column>
+            <Column>
+                <Text text="Available"/>
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem >
+                <cells>
+                    <Text text="{bookData>name}"/>
+                    <Text text="{bookData>author}"/>
+                    <Text text="{bookData>genre}"/>
+                    <Text text="{bookData>availablequantity}" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
 </mvc:View>

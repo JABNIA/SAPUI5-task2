@@ -1,0 +1,44 @@
+{
+    "books": [
+        {
+            "id": "B001",
+            "name": "The Midnight Library",
+            "author": "Matt Haig",
+            "genre": "Fantasy",
+            "releasedate": "2020-08-13",
+            "availablequantity": 15
+        },
+        {
+            "id": "B002",
+            "name": "Project Hail Mary",
+            "author": "Andy Weir",
+            "genre": "Science Fiction",
+            "releasedate": "2021-05-04",
+            "availablequantity": 22
+        },
+        {
+            "id": "B003",
+            "name": "Where the Crawdads Sing",
+            "author": "Delia Owens",
+            "genre": "Mystery",
+            "releasedate": "2018-08-14",
+            "availablequantity": 9
+        },
+        {
+            "id": "B004",
+            "name": "Atomic Habits",
+            "author": "James Clear",
+            "genre": "Self-Help",
+            "releasedate": "2018-10-16",
+            "availablequantity": 35
+        },
+        {
+            "id": "B005",
+            "name": "The Silent Patient",
+            "author": "Alex Michaelides",
+            "genre": "Thriller",
+            "releasedate": "2019-02-05",
+            "availablequantity": 18
+        }
+    ]
+}
