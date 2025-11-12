@@ -1,6 +1,62 @@
-<mvc:View controllerName="project1.controller.Main"
+<mvc:View xmlns:core="sap.ui.core" controllerName="project1.controller.Main"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">
-    <Page id="page" title="{i18n>title}">
-    </Page>
+    <Table
+    id="bookTable"
+    mode="MultiSelect"
+    items="{
+        path: 'bookData>/books'
+    }"
+    >
+        <headerToolbar>
+            <Toolbar>
+                <Title text="Book List"/>
+            </Toolbar>
+        </headerToolbar>
+        <columns>
+            <Column>
+                <Text text="Name"/>
+            </Column>
+            <Column>
+                <Text text="Author"/>
+            </Column>
+            <Column>
+                <Text text="Genre"/>
+            </Column>
+            <Column>
+                <Text text="Available"/>
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem >
+                <cells>
+                    <Text text="{bookData>name}"/>
+                    <Text text="{bookData>author}"/>
+                    <Text text="{bookData>genre}"/>
+                    <Text text="{bookData>availablequantity}" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+    <ToolbarSeparator  />
+    <Toolbar >
+        <Button text="Add Record" 
+            press=".onAddRecord"
+        />
+        <Button text="Delete Delete" 
+        press=".onDeleteRecord"/>
+
+        <Input id="searchInput"  width="40%"/>
+
+        <Select 
+            id="genreSelect" 
+            items= "{
+                path: 'gernes>/bookGenres'
+            }"
+            width="10%"
+        >
+            <core:Item text="{gernes>key}" key="{gernes>text}"/>
+        </Select>
+        <Button text="Filter" press=".onApplyFilters" />
+    </Toolbar>
 </mvc:View>
