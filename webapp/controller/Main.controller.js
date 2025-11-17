@@ -28,7 +28,7 @@ sap.ui.define(
                             return { key: genre, text: genre };
                         }),
                     });
-                    console.log(oGenreModel.getData());
+                    
                     this.getView().setModel(oGenreModel, "gernes");
 
                     this.getView().setModel(
