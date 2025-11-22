@@ -53,7 +53,15 @@ sap.ui.define(
                     releasedate: this.byId("bookReleaseDate").getValue(),
                     availablequantity: this.byId("bookAvailableQuantity").getValue(),
                 };
+                if(
+                    !oNewRow.name ||
+                    !oNewRow.author ||
+                    !oNewRow.genre ||
+                    !oNewRow.releasedate ||
+                    !oNewRow.availablequantity
+                ) return;
 
+                
                 aBooks.push(oNewRow);
                 oModel.setProperty("/books", aBooks);
                 this.getView().setModel(oModel, "bookData");
