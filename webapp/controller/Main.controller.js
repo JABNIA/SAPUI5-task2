@@ -47,16 +47,17 @@ sap.ui.define(
 
                 const oNewRow = {
                     id: `B0${aBooks.length + 1}`,
-                    name: "",
-                    author: "",
-                    genre: "",
-                    releasedate: "",
-                    availablequantity: "",
+                    name: this.byId("bookName").getValue(),
+                    author: this.byId("bookAuthor").getValue(),
+                    genre: this.byId("bookGenre").getValue(),
+                    releasedate: this.byId("bookReleaseDate").getValue(),
+                    availablequantity: this.byId("bookAvailableQuantity").getValue(),
                 };
 
                 aBooks.push(oNewRow);
                 oModel.setProperty("/books", aBooks);
                 this.getView().setModel(oModel, "bookData");
+                this.AddRecordDialog.close();
             },
 
             onDeleteRecord() {
@@ -123,16 +124,31 @@ sap.ui.define(
                 console.log(this.getModel("viewModel").getData());
             },
 
-            async onOpenDialog() {
-                this.oDialog ??= await this.loadFragment({
+            async onOpenDeleteDialog() {
+                this.oDeleteDialog ??= await this.loadFragment({
                     name: "project1.view.DeleteDialog",
                 });
 
-                this.oDialog.open();
+                this.oDeleteDialog.open();
             },
 
-            onCloseDialog() {
-                this.oDialog.close();
+            onCloseDialog(oEvent) {
+                const dyalogType = oEvent.getSource().data("dialogType");
+
+                if (dyalogType === "Delete") {
+                    this.oDeleteDialog.close();
+                }
+                if (dyalogType === "AddRecord") {
+                    this.AddRecordDialog.close();
+                }
+            },
+
+            async onOpenAddRecordDialog() {
+                this.AddRecordDialog ??= await this.loadFragment({
+                    name: "project1.view.AddRecordDialog",
+                });
+
+                this.AddRecordDialog.open();
             },
         });
     }
