@@ -18,7 +18,6 @@
         path: 'bookData>/books'
     }"
         >
-
             <headerToolbar>
                 <Toolbar>
                     <Title text="Book List" />

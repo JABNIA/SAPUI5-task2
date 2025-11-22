@@ -28,7 +28,7 @@ sap.ui.define(
                             return { key: genre, text: genre };
                         }),
                     });
-                    
+
                     this.getView().setModel(oGenreModel, "gernes");
 
                     this.getView().setModel(
@@ -38,7 +38,6 @@ sap.ui.define(
                         }),
                         "viewModel"
                     );
-
                 });
             },
 
@@ -61,7 +60,6 @@ sap.ui.define(
             },
 
             onDeleteRecord() {
-
                 const oTable = this.getView().byId("bookTable");
                 const oBooks = this.getModel("bookData").getProperty("/books");
                 const oSelectedItemsId = oTable
@@ -122,17 +120,17 @@ sap.ui.define(
                     !this.getModel("viewModel").getProperty("/isVisible")
                 );
                 this.getModel("viewModel").setProperty("/id", bookId);
-                console.log(this.getModel("viewModel").getData())
+                console.log(this.getModel("viewModel").getData());
             },
 
             async onOpenDialog() {
                 this.oDialog ??= await this.loadFragment({
-                name: "project1.view.DeleteDialog",
+                    name: "project1.view.DeleteDialog",
                 });
 
                 this.oDialog.open();
             },
-            
+
             onCloseDialog() {
                 this.oDialog.close();
             },
