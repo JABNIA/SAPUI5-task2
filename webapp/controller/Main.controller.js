@@ -61,6 +61,7 @@ sap.ui.define(
             },
 
             onDeleteRecord() {
+
                 const oTable = this.getView().byId("bookTable");
                 const oBooks = this.getModel("bookData").getProperty("/books");
                 const oSelectedItemsId = oTable
@@ -79,6 +80,7 @@ sap.ui.define(
                 oModel.setProperty("/books", filteredBooks);
 
                 this.getView().setModel(oModel, "bookData");
+                this.oDialog.close();
             },
 
             onApplyFilters() {
@@ -108,6 +110,7 @@ sap.ui.define(
 
                 oBinding.filter(aFilter);
             },
+
             onEditTitle(oEvent) {
                 const bookId = oEvent
                     .getSource()
@@ -120,6 +123,18 @@ sap.ui.define(
                 );
                 this.getModel("viewModel").setProperty("/id", bookId);
                 console.log(this.getModel("viewModel").getData())
+            },
+
+            async onOpenDialog() {
+                this.oDialog ??= await this.loadFragment({
+                name: "project1.view.DeleteDialog",
+                });
+
+                this.oDialog.open();
+            },
+            
+            onCloseDialog() {
+                this.oDialog.close();
             },
         });
     }

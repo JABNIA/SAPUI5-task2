@@ -28,7 +28,7 @@
                     />
                     <Button
                         text="Delete Delete"
-                        press=".onDeleteRecord"
+                        press=".onOpenDialog"
                     />
 
                     <ToolbarSeparator />
