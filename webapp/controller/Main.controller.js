@@ -40,11 +40,6 @@ sap.ui.define(
                         "viewModel"
                     );
                 });
-                // const i18nModel = new ResourceModel({
-                //     bundlename: "project1.i18n.i18n",
-                // })
-
-                // this.getView().setModel(i18nModel, "i18n");
             },
 
             onAddRecord() {
@@ -69,22 +64,32 @@ sap.ui.define(
                     !oNewRow.releasedate ||
                     !oNewRow.availablequantity
                 ) {
+                    const oBundle = this.getView()
+                        .getModel("i18n")
+                        .getResourceBundle();
+
                     if (oNewRow.name === "") {
-                        MessageToast.show("Please fill Name field");
+                        const msg = oBundle.getText("warningNameField");
+                        console.log(msg);
+                        MessageToast.show(`${msg}`);
                     }
                     if (oNewRow.author === "") {
-                        MessageToast.show("Please fill Author field");
+                        const msg = oBundle.getText("warningAuthorField");
+                        MessageToast.show(`${msg}`);
                     }
                     if (oNewRow.genre === "") {
-                        MessageToast.show("Please fill Gerne field");
+                        const msg = oBundle.getText("warningGenreField");
+                        MessageToast.show(`${msg}`);
                     }
                     if (oNewRow.releasedate === "") {
-                        MessageToast.show("Please fill Release Date field");
+                        const msg = oBundle.getText("warningReleaseDateField");
+                        MessageToast.show(`${msg}`);
                     }
                     if (oNewRow.availablequantity === "") {
-                        MessageToast.show(
-                            "Please fill Available Quantity field"
+                        const msg = oBundle.getText(
+                            "warningAvailableQuantityField"
                         );
+                        MessageToast.show(`${msg}`);
                     }
                     return;
                 }
