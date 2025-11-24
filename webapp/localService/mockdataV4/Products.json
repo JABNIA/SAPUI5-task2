@@ -1,0 +1,83 @@
+[
+    {
+        "ID": 8,
+        "Name": "Educated",
+        "Description": "A memoir by Tara Westover.",
+        "ReleaseDate": "2018-02-20T00:00:00Z",
+        "DiscontinuedDate": null,
+        "Rating": 4,
+        "Price": 14.99
+    },
+    {
+        "ID": 9,
+        "Name": "The Night Circus",
+        "Description": "A fantasy novel by Erin Morgenstern.",
+        "ReleaseDate": "2011-09-13T00:00:00Z",
+        "DiscontinuedDate": null,
+        "Rating": 4,
+        "Price": 12.5
+    },
+    {
+        "ID": 10,
+        "Name": "The Girl on the Train",
+        "Description": "A psychological thriller novel by Paula Hawkins.",
+        "ReleaseDate": "2015-01-13T00:00:00Z",
+        "DiscontinuedDate": null,
+        "Rating": 3,
+        "Price": 9.99
+    },
+    {
+        "ID": 11,
+        "Name": "Circe",
+        "Description": "A novel by Madeline Miller.",
+        "ReleaseDate": "2018-04-10T00:00:00Z",
+        "DiscontinuedDate": null,
+        "Rating": 5,
+        "Price": 13.49
+    },
+    {
+        "ID": 12,
+        "Name": "It Ends with Us",
+        "Description": "A romance novel by Colleen Hoover.",
+        "ReleaseDate": "2016-08-02T00:00:00Z",
+        "DiscontinuedDate": null,
+        "Rating": 4,
+        "Price": 11.99
+    },
+    {
+        "ID": 13,
+        "Name": "The Alchemist",
+        "Description": "A novel by Paulo Coelho.",
+        "ReleaseDate": "1988-05-01T00:00:00Z",
+        "DiscontinuedDate": null,
+        "Rating": 5,
+        "Price": 10.0
+    },
+    {
+        "ID": 14,
+        "Name": "A Court of Thorns and Roses",
+        "Description": "A fantasy novel by Sarah J. Maas.",
+        "ReleaseDate": "2015-05-05T00:00:00Z",
+        "DiscontinuedDate": null,
+        "Rating": 4,
+        "Price": 15.0
+    },
+    {
+        "ID": 15,
+        "Name": "The Hunger Games",
+        "Description": "A dystopian novel by Suzanne Collins.",
+        "ReleaseDate": "2008-09-14T00:00:00Z",
+        "DiscontinuedDate": null,
+        "Rating": 5,
+        "Price": 8.99
+    },
+    {
+        "ID": 16,
+        "Name": "The Catcher in the Rye",
+        "Description": "A novel by J. D. Salinger.",
+        "ReleaseDate": "1951-07-16T00:00:00Z",
+        "DiscontinuedDate": null,
+        "Rating": 3,
+        "Price": 6.99
+    }
+]

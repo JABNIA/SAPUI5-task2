@@ -1,0 +1,65 @@
+[
+    {
+        "ID": 1,
+        "Name": "The Silent Patient",
+        "Description": "A psychological thriller about a woman's act of violence against her husband.",
+        "ReleaseDate": "2019-02-05T00:00:00",
+        "DiscontinuedDate": null,
+        "Rating": 4,
+        "Price": 19.99
+    },
+    {
+        "ID": 2,
+        "Name": "Where the Crawdads Sing",
+        "Description": "A murder mystery and a coming-of-age narrative.",
+        "ReleaseDate": "2018-08-14T00:00:00",
+        "DiscontinuedDate": null,
+        "Rating": 5,
+        "Price": 14.99
+    },
+    {
+        "ID": 3,
+        "Name": "Project Hail Mary",
+        "Description": "A science fiction novel by Andy Weir.",
+        "ReleaseDate": "2021-05-04T00:00:00",
+        "DiscontinuedDate": null,
+        "Rating": 5,
+        "Price": 24.99
+    },
+    {
+        "ID": 4,
+        "Name": "The MIDnight Library",
+        "Description": "A fantasy novel about choices and regrets.",
+        "ReleaseDate": "2020-08-13T00:00:00",
+        "DiscontinuedDate": null,
+        "Rating": 3,
+        "Price": 16.99
+    },
+    {
+        "ID": 5,
+        "Name": "Atomic Habits",
+        "Description": "A self-help book about building good habits.",
+        "ReleaseDate": "2018-10-16T00:00:00",
+        "DiscontinuedDate": null,
+        "Rating": 5,
+        "Price": 18.99
+    },
+    {
+        "ID": 6,
+        "Name": "The Song of Achilles",
+        "Description": "A retelling of the Trojan War.",
+        "ReleaseDate": "2011-09-20T00:00:00",
+        "DiscontinuedDate": null,
+        "Rating": 4,
+        "Price": 12.99
+    },
+    {
+        "ID": 7,
+        "Name": "Dune",
+        "Description": "A science fiction novel by Frank Herbert.",
+        "ReleaseDate": "1965-08-01T00:00:00",
+        "DiscontinuedDate": null,
+        "Rating": 5,
+        "Price": 15.99
+    }
+]

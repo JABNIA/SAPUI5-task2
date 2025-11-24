@@ -3,7 +3,8 @@ sap.ui.define([], () => {
 
     return {
         formatDate(sDate) {
-            return sDate.substring(0, 4);
+            console.log(sDate)
+            if(sDate !== null) return sDate.substring(0, 4);
         }
     }
 })

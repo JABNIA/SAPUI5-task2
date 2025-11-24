@@ -40,11 +40,6 @@ sap.ui.define(
                         "viewModel"
                     );
                 });
-                // const i18nModel = new ResourceModel({
-                //     bundlename: "project1.i18n.i18n",
-                // })
-
-                // this.getView().setModel(i18nModel, "i18n");
             },
 
             onAddRecord() {
@@ -83,16 +78,28 @@ sap.ui.define(
                         return item.getBindingContext("bookData").getObject()
                             .id;
                     });
+                console.log(oSelectedItemsId)
+
+                if(oSelectedItemsId.length === 0) {
+                    
+                    this.oDeleteDialog.close();
+                    
+                    alert("First please select Record You want to delete")
+                    
+                    return;
+                }
 
                 const filteredBooks = oBooks.filter((book) => {
                     return !oSelectedItemsId.includes(book.id);
                 });
-
+                
+                
                 const oModel = new JSONModel();
-
+                
                 oModel.setProperty("/books", filteredBooks);
-
+                
                 this.getView().setModel(oModel, "bookData");
+                // this.getView().addDependent(this.oDeleteDialog);
                 this.oDeleteDialog.close();
             },
 

@@ -19,21 +19,12 @@ sap.ui.define([
             const sPath = sap.ui.require.toUrl("project1/localService");
 
             oMockServer.simulate(sPath + "/metadataV2.xml", {
-                sMockDataBaseUrl: sPath + "/dataV2",
-                bGenerateMissingMockData: true,   
+                sMockDataBaseUrl: sPath + "/mockdata",
+                bGenerateMissingMockData: true,
             });
 
             oMockServer.start();
-
-            const oMockServerV4 = new MockServer({
-                rootUri: "/V4/OData/OData.svc/", 
-            });
-            oMockServerV4.simulate(sPath + "/metadataV4.xml", {
-                sMockDataBaseUrl: sPath + "/dataV4",
-                bGenerateMissingMockData: true,   
-            });
-            oMockServerV4.start();
         }
     };
-    
+
 })
