@@ -5,7 +5,7 @@
 >
     <Dialog
         id="addRecordDialog"
-        title="Add New Book Record"
+        title="{i18n>addNewBookRecord}"
         contentWidth="30%"
     >
         <HBox
@@ -14,7 +14,7 @@
         >
             <Label
                 labelFor="bookName"
-                text="Enter Book Name"
+                text="{i18n>enterBookName}"
             />
             <Input
                 id="bookName"
@@ -22,7 +22,7 @@
             />
             <Label
                 labelFor="bookAuthor"
-                text="Enter Author"
+                text="{i18n>enterAuthorName}"
             />
             <Input
                 id="bookAuthor"
@@ -30,7 +30,7 @@
             />
             <Label
                 labelFor="bookGenre"
-                text="Enter Genre"
+                text="{i18n>enterGenre}"
             />
             <Input
                 id="bookGenre"
@@ -38,7 +38,7 @@
             />
             <Label
                 labelFor="bookReleaseDate"
-                text="Enter Release Date"
+                text="{i18n>enterReleaseDate}"
             />
             <Input
                 id="bookReleaseDate"
@@ -46,7 +46,7 @@
             />
             <Label
                 labelFor="bookAvailableQuantity"
-                text="Available"
+                text="{i18n>enterAvailableQuantity}"
             />
             <Input
                 id="bookAvailableQuantity"
@@ -55,13 +55,13 @@
         </HBox>
         <beginButton>
             <Button
-                text="Add"
+                text="{i18n>addRecord}"
                 press=".onAddRecord"
             />
         </beginButton>
         <endButton>
             <Button
-                text="Cancel"
+                text="{i18n>cancel}"
                 press=".onCloseDialog"
                 app:dialogType="AddRecord"
             />

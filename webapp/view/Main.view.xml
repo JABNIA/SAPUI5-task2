@@ -14,13 +14,13 @@
         >
             <headerToolbar>
                 <Toolbar>
-                    <Title text="Book List" />
+                    <Title text="{i18n>bookList}" />
                     <Button
-                        text="Add Record"
+                        text="{i18n>addRecord}"
                         press=".onOpenAddRecordDialog"
                     />
                     <Button
-                        text="Delete Record"
+                        text="{i18n>deleteRecord}"
                         press=".onOpenDeleteDialog"
                     />
 
@@ -32,8 +32,8 @@
                     <Select
                         id="genreSelect"
                         items="{
-                path: 'gernes>/bookGenres'
-            }"
+                            path: 'gernes>/bookGenres'
+                        }"
                         width="10%"
                     >
                         <core:Item
@@ -42,26 +42,29 @@
                         />
                     </Select>
                     <Button
-                        text="Filter"
+                        text="{i18n>filter}"
                         press=".onApplyFilters"
                     />
                 </Toolbar>
             </headerToolbar>
             <columns>
                 <Column>
-                    <Text text="Name" />
+                    <Text text="{i18n>nameColumn}" />
                 </Column>
                 <Column>
-                    <Text text="Author" />
+                    <Text text="{i18n>authorColumn}" />
                 </Column>
                 <Column>
-                    <Text text="Genre" />
+                    <Text text="{i18n>genreColumn}" />
                 </Column>
                 <Column>
-                    <Text text="Available" />
+                    <Text text="{i18n>releaseDateColumn}" />
                 </Column>
                 <Column>
-                    <Text text="Actions" />
+                    <Text text="{i18n>availableColumn}" />
+                </Column>
+                <Column>
+                    <Text text="{i18n>actionColumn}" />
                 </Column>
             </columns>
             <items>
@@ -82,6 +85,18 @@
                         </HBox>
                         <HBox>
                             <Text text="{bookData>genre}" />
+                        </HBox>
+                        <HBox>
+                            <Text 
+                            core:require="{
+                                Formatter: 'project1/model/formatter'
+                            }"
+                            text="{
+                                path: 'bookData>releasedate',
+                                formatter: 'Formatter.formatDate.bind($controller)'
+                            }" 
+                            
+                            />
                         </HBox>
                         <HBox>
                             <Text text="{bookData>availablequantity}" />

@@ -4,7 +4,7 @@ sap.ui.define(
         "sap/ui/model/json/JSONModel",
         "sap/ui/model/Filter",
         "sap/ui/model/FilterOperator",
-        "sap/m/MessageToast"
+        "sap/m/MessageToast",
     ],
     (BaseController, JSONModel, Filter, FilterOperator, MessageToast) => {
         "use strict";
@@ -52,30 +52,44 @@ sap.ui.define(
                     author: this.byId("bookAuthor").getValue(),
                     genre: this.byId("bookGenre").getValue(),
                     releasedate: this.byId("bookReleaseDate").getValue(),
-                    availablequantity: this.byId("bookAvailableQuantity").getValue(),
+                    availablequantity: this.byId(
+                        "bookAvailableQuantity"
+                    ).getValue(),
                 };
 
-                if(
+                if (
                     !oNewRow.name ||
                     !oNewRow.author ||
                     !oNewRow.genre ||
                     !oNewRow.releasedate ||
                     !oNewRow.availablequantity
                 ) {
-                    if(oNewRow.name === ""){
-                        MessageToast.show("Please fill Name field")
+                    const oBundle = this.getView()
+                        .getModel("i18n")
+                        .getResourceBundle();
+
+                    if (oNewRow.name === "") {
+                        const msg = oBundle.getText("warningNameField");
+                        console.log(msg);
+                        MessageToast.show(`${msg}`);
                     }
-                    if(oNewRow.author === ""){
-                        MessageToast.show("Please fill Author field")
+                    if (oNewRow.author === "") {
+                        const msg = oBundle.getText("warningAuthorField");
+                        MessageToast.show(`${msg}`);
                     }
-                    if(oNewRow.genre === ""){
-                        MessageToast.show("Please fill Gerne field")
+                    if (oNewRow.genre === "") {
+                        const msg = oBundle.getText("warningGenreField");
+                        MessageToast.show(`${msg}`);
                     }
-                    if(oNewRow.releasedate === ""){
-                        MessageToast.show("Please fill Release Date field")
+                    if (oNewRow.releasedate === "") {
+                        const msg = oBundle.getText("warningReleaseDateField");
+                        MessageToast.show(`${msg}`);
                     }
-                    if(oNewRow.availablequantity === ""){
-                        MessageToast.show("Please fill Available Quantity field")
+                    if (oNewRow.availablequantity === "") {
+                        const msg = oBundle.getText(
+                            "warningAvailableQuantityField"
+                        );
+                        MessageToast.show(`${msg}`);
                     }
                     return;
                 }
@@ -101,24 +115,23 @@ sap.ui.define(
                         return item.getBindingContext("bookData").getObject()
                             .id;
                     });
-                console.log(oSelectedItemsId)
+                console.log(oSelectedItemsId);
 
-                if(oSelectedItemsId.length === 0) {
-                    
+                if (oSelectedItemsId.length === 0) {
                     this.oDeleteDialog.close();
-                    
-                    alert("First please select Record You want to delete")
-                    
+
+                    alert("First please select Record You want to delete");
+
                     return;
                 }
-                                const filteredBooks = oBooks.filter((book) => {
+                const filteredBooks = oBooks.filter((book) => {
                     return !oSelectedItemsId.includes(book.id);
                 });
-                
+
                 const oModel = new JSONModel();
-                
+
                 oModel.setProperty("/books", filteredBooks);
-                
+
                 this.getView().setModel(oModel, "bookData");
 
                 this.oDeleteDialog.close();
