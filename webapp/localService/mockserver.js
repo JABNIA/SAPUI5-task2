@@ -24,6 +24,17 @@ sap.ui.define([
             });
 
             oMockServer.start();
+
+            const oMockServerV4 = new MockServer({
+                rootUri: "/V4/OData/OData.svc/", 
+            });
+
+            oMockServerV4.simulate(sPath + "/metadataV4.xml", {
+                sMockDataBaseUrl: sPath + "/dataV4",
+                bGenerateMissingMockData: true,   
+            });
+            
+            oMockServerV4.start();
         }
     };
 
