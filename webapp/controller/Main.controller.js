@@ -55,12 +55,6 @@ sap.ui.define(
                     availablequantity: this.byId("bookAvailableQuantity").getValue(),
                 };
 
-                this.byId("bookName").setValue("");
-                this.byId("bookAuthor").setValue("");
-                this.byId("bookGenre").setValue("");
-                this.byId("bookReleaseDate").setValue("");
-                this.byId("bookAvailableQuantity").setValue("");
-
                 if(
                     !oNewRow.name ||
                     !oNewRow.author ||
@@ -86,7 +80,12 @@ sap.ui.define(
                     return;
                 }
 
-                
+                this.byId("bookName").setValue("");
+                this.byId("bookAuthor").setValue("");
+                this.byId("bookGenre").setValue("");
+                this.byId("bookReleaseDate").setValue("");
+                this.byId("bookAvailableQuantity").setValue("");
+
                 aBooks.push(oNewRow);
                 oModel.setProperty("/books", aBooks);
                 this.getView().setModel(oModel, "bookData");
