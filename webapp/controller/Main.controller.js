@@ -4,8 +4,9 @@ sap.ui.define(
         "sap/ui/model/json/JSONModel",
         "sap/ui/model/Filter",
         "sap/ui/model/FilterOperator",
+        "sap/m/MessageToast"
     ],
-    (BaseController, JSONModel, Filter, FilterOperator) => {
+    (BaseController, JSONModel, Filter, FilterOperator, MessageToast) => {
         "use strict";
 
         return BaseController.extend("project1.controller.Main", {
@@ -47,16 +48,48 @@ sap.ui.define(
 
                 const oNewRow = {
                     id: `B0${aBooks.length + 1}`,
-                    name: "",
-                    author: "",
-                    genre: "",
-                    releasedate: "",
-                    availablequantity: "",
+                    name: this.byId("bookName").getValue(),
+                    author: this.byId("bookAuthor").getValue(),
+                    genre: this.byId("bookGenre").getValue(),
+                    releasedate: this.byId("bookReleaseDate").getValue(),
+                    availablequantity: this.byId("bookAvailableQuantity").getValue(),
                 };
+
+                if(
+                    !oNewRow.name ||
+                    !oNewRow.author ||
+                    !oNewRow.genre ||
+                    !oNewRow.releasedate ||
+                    !oNewRow.availablequantity
+                ) {
+                    if(oNewRow.name === ""){
+                        MessageToast.show("Please fill Name field")
+                    }
+                    if(oNewRow.author === ""){
+                        MessageToast.show("Please fill Author field")
+                    }
+                    if(oNewRow.genre === ""){
+                        MessageToast.show("Please fill Gerne field")
+                    }
+                    if(oNewRow.releasedate === ""){
+                        MessageToast.show("Please fill Release Date field")
+                    }
+                    if(oNewRow.availablequantity === ""){
+                        MessageToast.show("Please fill Available Quantity field")
+                    }
+                    return;
+                }
+
+                this.byId("bookName").setValue("");
+                this.byId("bookAuthor").setValue("");
+                this.byId("bookGenre").setValue("");
+                this.byId("bookReleaseDate").setValue("");
+                this.byId("bookAvailableQuantity").setValue("");
 
                 aBooks.push(oNewRow);
                 oModel.setProperty("/books", aBooks);
                 this.getView().setModel(oModel, "bookData");
+                this.AddRecordDialog.close();
             },
 
             onDeleteRecord() {
@@ -68,17 +101,27 @@ sap.ui.define(
                         return item.getBindingContext("bookData").getObject()
                             .id;
                     });
+                console.log(oSelectedItemsId)
 
-                const filteredBooks = oBooks.filter((book) => {
+                if(oSelectedItemsId.length === 0) {
+                    
+                    this.oDeleteDialog.close();
+                    
+                    alert("First please select Record You want to delete")
+                    
+                    return;
+                }
+                                const filteredBooks = oBooks.filter((book) => {
                     return !oSelectedItemsId.includes(book.id);
                 });
-
+                
                 const oModel = new JSONModel();
-
+                
                 oModel.setProperty("/books", filteredBooks);
-
+                
                 this.getView().setModel(oModel, "bookData");
-                this.oDialog.close();
+
+                this.oDeleteDialog.close();
             },
 
             onApplyFilters() {
@@ -123,16 +166,31 @@ sap.ui.define(
                 console.log(this.getModel("viewModel").getData());
             },
 
-            async onOpenDialog() {
-                this.oDialog ??= await this.loadFragment({
+            async onOpenDeleteDialog() {
+                this.oDeleteDialog ??= await this.loadFragment({
                     name: "project1.view.DeleteDialog",
                 });
 
-                this.oDialog.open();
+                this.oDeleteDialog.open();
             },
 
-            onCloseDialog() {
-                this.oDialog.close();
+            onCloseDialog(oEvent) {
+                const dyalogType = oEvent.getSource().data("dialogType");
+
+                if (dyalogType === "Delete") {
+                    this.oDeleteDialog.close();
+                }
+                if (dyalogType === "AddRecord") {
+                    this.AddRecordDialog.close();
+                }
+            },
+
+            async onOpenAddRecordDialog() {
+                this.AddRecordDialog ??= await this.loadFragment({
+                    name: "project1.view.AddRecordDialog",
+                });
+
+                this.AddRecordDialog.open();
             },
         });
     }

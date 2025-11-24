@@ -4,13 +4,7 @@
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
 >
-    <Page
-        id="TableWrapper"
-        showHeader="false"
-        enableScrolling="true"
-        class="sapUiContentPadding"
-        showNavButton="false"
-    >
+    <Page>
         <Table
             id="bookTable"
             mode="MultiSelect"
@@ -23,14 +17,12 @@
                     <Title text="Book List" />
                     <Button
                         text="Add Record"
-                        press=".onAddRecord"
+                        press=".onOpenAddRecordDialog"
                     />
                     <Button
                         text="Delete Record"
-                        press=".onOpenDialog"
+                        press=".onOpenDeleteDialog"
                     />
-
-                    <ToolbarSeparator />
 
                     <Input
                         id="searchInput"
@@ -105,4 +97,5 @@
             </items>
         </Table>
     </Page>
+    <ToolbarSeparator />
 </mvc:View>

@@ -1,6 +1,8 @@
 <core:FragmentDefinition
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+
 >
     <Dialog
         id="helloDialog"
@@ -20,6 +22,7 @@
             <Button
                 text="No"
                 press=".onCloseDialog"
+                app:dialogType="Delete"
             />
         </endButton>
     </Dialog>
