@@ -5,112 +5,239 @@
     xmlns="sap.m"
 >
     <Page>
-        <Table
-            id="bookTable"
-            mode="MultiSelect"
-            items="{
-        path: 'bookData>/books'
-    }"
+        <IconTabBar
+            id="textBar"
+            class="sapUiResponsivePaddings"
         >
-            <headerToolbar>
-                <Toolbar>
-                    <Title text="{i18n>bookList}" />
-                    <Button
-                        text="{i18n>addRecord}"
-                        press=".onOpenAddRecordDialog"
-                    />
-                    <Button
-                        text="{i18n>deleteRecord}"
-                        press=".onOpenDeleteDialog"
-                    />
-
-                    <Input
-                        id="searchInput"
-                        width="40%"
-                    />
-
-                    <Select
-                        id="genreSelect"
+            <items>
+                <IconTabFilter text="{i18n>jsonModel}">
+                    <Table
+                        id="bookTable"
+                        mode="MultiSelect"
                         items="{
+                            path: 'bookData>/books'
+                        }"
+                    >
+                        <headerToolbar>
+                            <Toolbar>
+                                <Title text="{i18n>bookList}" />
+                                <Button
+                                    text="{i18n>addRecord}"
+                                    press=".onOpenAddRecordDialog"
+                                />
+                                <Button
+                                    text="{i18n>deleteRecord}"
+                                    press=".onOpenDeleteDialog"
+                                />
+
+                                <Input
+                                    id="searchInput"
+                                    width="40%"
+                                />
+
+                                <Select
+                                    id="genreSelect"
+                                    items="{
                             path: 'gernes>/bookGenres'
                         }"
-                        width="10%"
-                    >
-                        <core:Item
-                            text="{gernes>key}"
-                            key="{gernes>text}"
-                        />
-                    </Select>
-                    <Button
-                        text="{i18n>filter}"
-                        press=".onApplyFilters"
-                    />
-                </Toolbar>
-            </headerToolbar>
-            <columns>
-                <Column>
-                    <Text text="{i18n>nameColumn}" />
-                </Column>
-                <Column>
-                    <Text text="{i18n>authorColumn}" />
-                </Column>
-                <Column>
-                    <Text text="{i18n>genreColumn}" />
-                </Column>
-                <Column>
-                    <Text text="{i18n>releaseDateColumn}" />
-                </Column>
-                <Column>
-                    <Text text="{i18n>availableColumn}" />
-                </Column>
-                <Column>
-                    <Text text="{i18n>actionColumn}" />
-                </Column>
-            </columns>
-            <items>
-                <ColumnListItem>
-                    <cells>
-                        <HBox>
-                            <Text
-                                text="{bookData>name}"
-                                visible="{= ${viewModel>/id} !== ${bookData>id} ? true : ${viewModel>/isVisible} ? false : true }"
-                            />
-                            <Input
-                                value="{bookData>name}"
-                                visible="{= ${viewModel>/isVisible} &amp;&amp; ${viewModel>/id} === ${bookData>id} }"
-                            />
-                        </HBox>
-                        <HBox>
-                            <Text text="{bookData>author}" />
-                        </HBox>
-                        <HBox>
-                            <Text text="{bookData>genre}" />
-                        </HBox>
-                        <HBox>
-                            <Text 
-                            core:require="{
+                                    width="10%"
+                                >
+                                    <core:Item
+                                        text="{gernes>key}"
+                                        key="{gernes>text}"
+                                    />
+                                </Select>
+                                <Button
+                                    text="{i18n>filter}"
+                                    press=".onApplyFilters"
+                                />
+                            </Toolbar>
+                        </headerToolbar>
+                        <columns>
+                            <Column>
+                                <Text text="{i18n>nameColumn}" />
+                            </Column>
+                            <Column>
+                                <Text text="{i18n>authorColumn}" />
+                            </Column>
+                            <Column>
+                                <Text text="{i18n>genreColumn}" />
+                            </Column>
+                            <Column>
+                                <Text text="{i18n>releaseDateColumn}" />
+                            </Column>
+                            <Column>
+                                <Text text="{i18n>availableColumn}" />
+                            </Column>
+                            <Column>
+                                <Text text="{i18n>actionColumn}" />
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem>
+                                <cells>
+                                    <HBox>
+                                        <Text
+                                            text="{bookData>name}"
+                                            visible="{= ${viewModel>/id} !== ${bookData>id} ? true : ${viewModel>/isVisible} ? false : true }"
+                                        />
+                                        <Input
+                                            value="{bookData>name}"
+                                            visible="{= ${viewModel>/isVisible} &amp;&amp; ${viewModel>/id} === ${bookData>id} }"
+                                        />
+                                    </HBox>
+                                    <HBox>
+                                        <Text text="{bookData>author}" />
+                                    </HBox>
+                                    <HBox>
+                                        <Text text="{bookData>genre}" />
+                                    </HBox>
+                                    <HBox>
+                                        <Text
+                                            core:require="{
                                 Formatter: 'project1/model/formatter'
                             }"
-                            text="{
+                                            text="{
                                 path: 'bookData>releasedate',
                                 formatter: 'Formatter.formatDate.bind($controller)'
-                            }" 
-                            
-                            />
-                        </HBox>
-                        <HBox>
-                            <Text text="{bookData>availablequantity}" />
-                        </HBox>
-                        <HBox>
-                            <Button
-                                text="{= ${viewModel>/isVisible} ? ${viewModel>/id} === ${bookData>id} ? 'Save Title' : 'Edit Title'  : 'Edit Title'}"
-                                press=".onEditTitle"
-                            />
-                        </HBox>
-                    </cells>
-                </ColumnListItem>
+                            }"
+                                        />
+                                    </HBox>
+                                    <HBox>
+                                        <Text
+                                            text="{bookData>availablequantity}"
+                                        />
+                                    </HBox>
+                                    <HBox>
+                                        <Button
+                                            text="{= ${viewModel>/isVisible} ? ${viewModel>/id} === ${bookData>id} ? 'Save Title' : 'Edit Title'  : 'Edit Title'}"
+                                            press=".onEditTitle"
+                                        />
+                                    </HBox>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </IconTabFilter>
+                <IconTabFilter text="{i18n>odataV2}">
+                    <Table
+                        id="productTable"
+                        mode="MultiSelect"
+                        items="{
+                        path: 'ODataV2>/Products',
+                        parameters: {
+                            expand: 'Supplier'
+                        }
+                    }"
+                    >
+                        <columns>
+                            <Column>
+                                <Text text="{i18n>products}" />
+                            </Column>
+                            <Column>
+                                <Text text="{i18n>description}" />
+                            </Column>
+                            <Column>
+                                <Text text="{i18n>releaseDate}" />
+                            </Column>
+                            <Column>
+                                <Text text="{i18n>discontinuedDate}" />
+                            </Column>
+                            <Column>
+                                <Text text="{i18n>rating}" />
+                            </Column>
+                            <Column>
+                                <Text text="{i18n>price}" />
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem>
+                                <HBox>
+                                    <Text text="{ODataV2>Name}" />
+                                </HBox>
+                                <HBox>
+                                    <Text text="{ODataV2>Description}" />
+                                </HBox>
+                                <HBox>
+                                    <Text text="{ODataV2>ReleaseDate}" />
+                                </HBox>
+                                <HBox>
+                                    <Text text="{ODataV2>DiscontinuedDate}" />
+                                </HBox>
+                                <HBox>
+                                    <Text text="{ODataV2>Rating}" />
+                                </HBox>
+                                <HBox>
+                                    <Text text="{ODataV2>Price}" />
+                                </HBox>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                    
+                </IconTabFilter>
+                <IconTabFilter text="{i18n>odataV4}">
+                    <Table
+                        id="V4dataTable"
+                        mode="MultiSelect"
+                        items="{
+                            path: 'ODataV4>/Products',
+                            parameters: {
+                                $count: true,
+                                $expand: 'Supplier'
+                            }
+                        }"
+                    >
+                        <columns>
+                            <Column>
+                                <Text text="{i18n>id}" />
+                            </Column>
+                            <Column>
+                                <Text text="{i18n>name}" />
+                            </Column>
+                            <Column>
+                                <Text text="{i18n>description}" />
+                            </Column>
+                            <Column>
+                                <Text text="{i18n>releaseDate}" />
+                            </Column>
+                            <Column>
+                                <Text text="{i18n>discontinuedDate}" />
+                            </Column>
+                            <Column>
+                                <Text text="{i18n>rating}" />
+                            </Column>
+                            <Column>
+                                <Text text="{i18n>price}" />
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem>
+                                <HBox>
+                                    <Text text="{ODataV4>ID}" />
+                                </HBox>
+                                <HBox>
+                                    <Text text="{ODataV4>Name}" />
+                                </HBox>
+                                <HBox>
+                                    <Text text="{ODataV4>Description}" />
+                                </HBox>
+                                <HBox>
+                                    <Text text="{ODataV4>ReleaseDate}" />
+                                </HBox>
+                                <HBox>
+                                    <Text text="{ODataV4>DiscontinuedDate}" />
+                                </HBox>
+                                <HBox>
+                                    <Text text="{ODataV4>Rating}" />
+                                </HBox>
+                                <HBox>
+                                    <Text text="{ODataV4>Price}" />
+                                </HBox>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </IconTabFilter>
             </items>
-        </Table>
+        </IconTabBar>
     </Page>
-    <ToolbarSeparator />
 </mvc:View>
