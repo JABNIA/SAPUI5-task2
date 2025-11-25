@@ -127,11 +127,12 @@ sap.ui.define(
                 const filteredBooks = oBooks.filter((book) => {
                     return !oSelectedItemsId.includes(book.id);
                 });
-
+                
+                
                 const oModel = new JSONModel();
-
+                
                 oModel.setProperty("/books", filteredBooks);
-
+                
                 this.getView().setModel(oModel, "bookData");
 
                 this.oDeleteDialog.close();

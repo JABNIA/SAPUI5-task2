@@ -9,7 +9,7 @@
         contentWidth="25%"
     >
         <content>
-            <Text text="Are you sure you want to delete selected records?" />
+            <Text text="{i18n>deleteMessage}" />
         </content>
 
         <beginButton>
