@@ -1,83 +1,92 @@
 [
     {
-        "ID": 8,
-        "Name": "Educated",
-        "Description": "A memoir by Tara Westover.",
-        "ReleaseDate": "2018-02-20T00:00:00Z",
-        "DiscontinuedDate": null,
-        "Rating": 4,
-        "Price": 14.99
+        "ID": 101,
+        "Name": "Aetheria VR Headset",
+        "Description": "Next-generation virtual reality system with haptic feedback controllers.",
+        "ReleaseDate": "2024-03-15",
+        "DiscontinuedDate": "2025-04-15",
+        "Rating": 4.5,
+        "Price": 599.99
     },
     {
-        "ID": 9,
-        "Name": "The Night Circus",
-        "Description": "A fantasy novel by Erin Morgenstern.",
-        "ReleaseDate": "2011-09-13T00:00:00Z",
-        "DiscontinuedDate": null,
-        "Rating": 4,
-        "Price": 12.5
+        "ID": 102,
+        "Name": "Aero-Flow Coffee Maker",
+        "Description": "Programmable single-serve coffee machine with a built-in grinder.",
+        "ReleaseDate": "2023-01-20",
+        "DiscontinuedDate": "2025-11-01",
+        "Rating": 3.8,
+        "Price": 125.0
     },
     {
-        "ID": 10,
-        "Name": "The Girl on the Train",
-        "Description": "A psychological thriller novel by Paula Hawkins.",
-        "ReleaseDate": "2015-01-13T00:00:00Z",
-        "DiscontinuedDate": null,
-        "Rating": 3,
-        "Price": 9.99
+        "ID": 103,
+        "Name": "Solstice E-Reader",
+        "Description": "Ultra-lightweight e-reader with an anti-glare paper-white display.",
+        "ReleaseDate": "2022-07-10",
+        "DiscontinuedDate": "2023-12-31",
+        "Rating": 4.9,
+        "Price": 99.99
     },
     {
-        "ID": 11,
-        "Name": "Circe",
-        "Description": "A novel by Madeline Miller.",
-        "ReleaseDate": "2018-04-10T00:00:00Z",
-        "DiscontinuedDate": null,
-        "Rating": 5,
-        "Price": 13.49
+        "ID": 104,
+        "Name": "Quantum Laptop Pro",
+        "Description": "High-performance laptop for demanding professional and creative tasks.",
+        "ReleaseDate": "2024-10-01",
+        "DiscontinuedDate": "2026-01-01",
+        "Rating": 5.0,
+        "Price": 1899.0
     },
     {
-        "ID": 12,
-        "Name": "It Ends with Us",
-        "Description": "A romance novel by Colleen Hoover.",
-        "ReleaseDate": "2016-08-02T00:00:00Z",
-        "DiscontinuedDate": null,
-        "Rating": 4,
-        "Price": 11.99
+        "ID": 105,
+        "Name": "Zenith Fitness Tracker",
+        "Description": "Waterproof fitness band with heart rate and sleep monitoring.",
+        "ReleaseDate": "2023-05-25",
+        "DiscontinuedDate": "2024-12-01",
+        "Rating": 4.1,
+        "Price": 49.5
     },
     {
-        "ID": 13,
-        "Name": "The Alchemist",
-        "Description": "A novel by Paulo Coelho.",
-        "ReleaseDate": "1988-05-01T00:00:00Z",
-        "DiscontinuedDate": null,
-        "Rating": 5,
-        "Price": 10.0
+        "ID": 106,
+        "Name": "Echo Noise-Cancelling Buds",
+        "Description": "True wireless earbuds with adaptive noise cancellation and 30-hour battery life.",
+        "ReleaseDate": "2024-06-12",
+        "DiscontinuedDate": "2024-08-30",
+        "Rating": 4.3,
+        "Price": 199.99
     },
     {
-        "ID": 14,
-        "Name": "A Court of Thorns and Roses",
-        "Description": "A fantasy novel by Sarah J. Maas.",
-        "ReleaseDate": "2015-05-05T00:00:00Z",
-        "DiscontinuedDate": null,
-        "Rating": 4,
-        "Price": 15.0
+        "ID": 107,
+        "Name": "Gourmet Stand Mixer (Red)",
+        "Description": "Heavy-duty stand mixer with 6 speed settings and three attachments.",
+        "ReleaseDate": "2021-11-05",
+        "DiscontinuedDate": "2025-05-05",
+        "Rating": 4.6,
+        "Price": 249.95
     },
     {
-        "ID": 15,
-        "Name": "The Hunger Games",
-        "Description": "A dystopian novel by Suzanne Collins.",
-        "ReleaseDate": "2008-09-14T00:00:00Z",
-        "DiscontinuedDate": null,
-        "Rating": 5,
-        "Price": 8.99
+        "ID": 108,
+        "Name": "Tundra Portable Heater",
+        "Description": "Compact ceramic space heater with tip-over protection and thermostat.",
+        "ReleaseDate": "2023-09-01",
+        "DiscontinuedDate": "2024-10-01",
+        "Rating": 3.5,
+        "Price": 65.0
     },
     {
-        "ID": 16,
-        "Name": "The Catcher in the Rye",
-        "Description": "A novel by J. D. Salinger.",
-        "ReleaseDate": "1951-07-16T00:00:00Z",
-        "DiscontinuedDate": null,
-        "Rating": 3,
-        "Price": 6.99
+        "ID": 109,
+        "Name": "Atlas Router AX6000",
+        "Description": "Tri-band Wi-Fi 6 router designed for large homes and high-speed internet.",
+        "ReleaseDate": "2024-01-28",
+        "DiscontinuedDate": "2025-03-20",
+        "Rating": 4.7,
+        "Price": 299.99
+    },
+    {
+        "ID": 110,
+        "Name": "Pocket Power Bank 10K",
+        "Description": "Ultra-slim 10,000mAh portable charger with USB-C and USB-A output.",
+        "ReleaseDate": "2024-02-01",
+        "DiscontinuedDate": "2024-07-15",
+        "Rating": 4.4,
+        "Price": 35.5
     }
 ]
