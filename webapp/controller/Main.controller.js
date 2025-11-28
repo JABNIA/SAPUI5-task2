@@ -5,8 +5,9 @@ sap.ui.define(
         "sap/ui/model/Filter",
         "sap/ui/model/FilterOperator",
         "sap/m/MessageToast",
+        "sap/m/MessageBox"
     ],
-    (BaseController, JSONModel, Filter, FilterOperator, MessageToast) => {
+    (BaseController, JSONModel, Filter, FilterOperator, MessageToast, MessageBox) => {
         "use strict";
 
         return BaseController.extend("project1.controller.Main", {
@@ -222,14 +223,14 @@ sap.ui.define(
                             .getModel("i18n")
                             .getResourceBundle();
                             const msg = oBundle.getText("successMessage")
-                            MessageToast.show("Record Deletion Succesfull")
+                            MessageToast.show(`${msg}`)
                         },
                         error: () => {
                             const oBundle = this.getView()
                             .getModel("i18n")
                             .getResourceBundle();
                             const msg = oBundle.getText("errorMessage")
-                            MessageToast.show("Record Deletion Succesfull")
+                            MessageBox.error(`${msg}`)
                             MessageToast.show("something went wrong")
                         }
                     })
