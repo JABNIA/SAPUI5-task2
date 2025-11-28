@@ -218,10 +218,19 @@ sap.ui.define(
 
                     oModel.remove(sPath, {
                         success: () => {
+                            const oBundle = this.getView()
+                            .getModel("i18n")
+                            .getResourceBundle();
+                            const msg = oBundle.getText("successMessage")
                             MessageToast.show("Record Deletion Succesfull")
                         },
                         error: () => {
-                            MessageToast.show("somethingwent wrong")
+                            const oBundle = this.getView()
+                            .getModel("i18n")
+                            .getResourceBundle();
+                            const msg = oBundle.getText("errorMessage")
+                            MessageToast.show("Record Deletion Succesfull")
+                            MessageToast.show("something went wrong")
                         }
                     })
 
