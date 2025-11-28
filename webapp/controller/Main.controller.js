@@ -205,6 +205,27 @@ sap.ui.define(
                 });
 
                 this.AddRecordDialog.open();
+            }, 
+            onDeleteV2Record() {
+                const oTable = this.byId("productTable");
+                const itemIdArr = oTable.getSelectedItems().map(item => {
+                    return item.getBindingContext("ODataV2").getObject()["ID"]
+                })
+                const oModel = this.getModel("ODataV2");
+                
+                itemIdArr.forEach(id => {
+                    const sPath = `/Products(${id})`;
+
+                    oModel.remove(sPath, {
+                        success: () => {
+                            MessageToast.show("Record Deletion Succesfull")
+                        },
+                        error: () => {
+                            MessageToast.show("somethingwent wrong")
+                        }
+                    })
+
+                })
             }
         });
     }
