@@ -261,16 +261,28 @@ sap.ui.define(
                     Rating: this.byId("ProductRating").getValue(),
                     Price: this.byId("ProductPrice").getValue()
                 }
-                console.log(new Date(this.byId("ProductReleaseDate").getDateValue()).getTime())
-                // if (
-                //     !newEntityObj.Name ||
-                //     !newEntityObj.Description ||
-                //     !newEntityObj.ReleaseDate ||
-                //     !newEntityObj.DiscontinuedDate ||
-                //     !newEntityObj.Rating ||
-                //     !newEntityObj.Price 
-                // ) return;
-
+                console.log(`/Date(${ new Date(this.byId("ProductReleaseDate").getDateValue()).getTime() })/`)
+                if (!newEntityObj.Name) {
+                    MessageToast.show(oBundle.getText("pleaseEnterProductName"))
+                    return;
+                }
+                if (!newEntityObj.Description) {
+                    MessageToast.show(oBundle.getText("pleaseEnterProductDescription"))
+                    return;
+                }
+                if (newEntityObj.ReleaseDate === "/Date(0)/" ) {
+                    MessageToast.show(oBundle.getText("pleaseEnterProductReleaseDate"))
+                    return;
+                }
+                if (!newEntityObj.Rating) {
+                    MessageToast.show(oBundle.getText("pleaseEnterProductRating"))
+                    return;
+                }
+                if (!newEntityObj.Price) {
+                    MessageToast.show(oBundle.getText("pleaseEnterProductPrice"))
+                    return;
+                }
+                
                 oModel.read("/Products", {
                     success: (oData) => {
                         console.log(oData.results[0].ReleaseDate)
@@ -279,13 +291,22 @@ sap.ui.define(
 
                         oModel.create("/Products", newEntityObj, {
                             success: (oData, oResponse) => {
-                                console.log(oData)
-                                MessageToast.show("done")                                
+                                const msg = oBundle.getText("recordSuccessfullyAdded")
+                                MessageToast.show(`${msg}`)                                
                             }
                         }
                     )
                         oModel.submitChanges();
-                        }
+
+                        this.byId("ProductName").setValue("")
+                        this.byId("ProductReleaseDate").setValue("")
+                        this.byId("ProductDiscontinuedDate").setValue("")
+                        this.byId("ProductDescription").setValue("")
+                        this.byId("ProductRating").setValue("")
+                        this.byId("ProductPrice").setValue("")
+
+                        this.AddV2RecordDialog.close()
+                    }
                     ,
                     error: () => {
                         MessageBox.error(`${oBundle.getText("errorMessage")}`)
