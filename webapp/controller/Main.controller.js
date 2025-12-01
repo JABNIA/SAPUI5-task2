@@ -7,7 +7,14 @@ sap.ui.define(
         "sap/m/MessageToast",
         "sap/m/MessageBox",
     ],
-    (BaseController, JSONModel, Filter, FilterOperator, MessageToast, MessageBox) => {
+    (
+        BaseController,
+        JSONModel,
+        Filter,
+        FilterOperator,
+        MessageToast,
+        MessageBox
+    ) => {
         "use strict";
 
         return BaseController.extend("project1.controller.Main", {
@@ -40,6 +47,9 @@ sap.ui.define(
                         }),
                         "viewModel"
                     );
+
+                    this.getView().setModel({isEditMode: false, editableId: 0}, "EditMode")
+
                 });
             },
 
@@ -128,12 +138,11 @@ sap.ui.define(
                 const filteredBooks = oBooks.filter((book) => {
                     return !oSelectedItemsId.includes(book.id);
                 });
-                
-                
+
                 const oModel = new JSONModel();
-                
+
                 oModel.setProperty("/books", filteredBooks);
-                
+
                 this.getView().setModel(oModel, "bookData");
 
                 this.oDeleteDialog.close();
@@ -209,92 +218,123 @@ sap.ui.define(
                 });
 
                 this.AddRecordDialog.open();
-            }, 
+            },
 
             async onOpenAddV2RecordFragment() {
                 this.AddV2RecordDialog ??= await this.loadFragment({
-                    name: "project1.view.AddV2RecordDialog"
-                })
+                    name: "project1.view.AddV2RecordDialog",
+                });
 
-                this.AddV2RecordDialog.open()
+                this.AddV2RecordDialog.open();
             },
 
             onDeleteV2Record() {
                 const oTable = this.byId("productTable");
-                const itemIdArr = oTable.getSelectedItems().map(item => {
-                    return item.getBindingContext("ODataV2").getObject()["ID"]
-                })
+                const itemIdArr = oTable.getSelectedItems().map((item) => {
+                    return item.getBindingContext("ODataV2").getObject()["ID"];
+                });
                 const oModel = this.getModel("ODataV2");
-                
-                itemIdArr.forEach(id => {
+
+                itemIdArr.forEach((id) => {
                     const sPath = `/Products(${id})`;
 
                     oModel.remove(sPath, {
                         success: () => {
                             const oBundle = this.getView()
-                            .getModel("i18n")
-                            .getResourceBundle();
-                            const msg = oBundle.getText("successMessage")
-                            MessageToast.show(`${msg}`)
+                                .getModel("i18n")
+                                .getResourceBundle();
+                            const msg = oBundle.getText("successMessage");
+                            MessageToast.show(`${msg}`);
                         },
                         error: () => {
                             const oBundle = this.getView()
-                            .getModel("i18n")
-                            .getResourceBundle();
-                            const msg = oBundle.getText("errorMessage")
-                            MessageBox.error(`${msg}`)
-                        }
-                    })
-
-                })
+                                .getModel("i18n")
+                                .getResourceBundle();
+                            const msg = oBundle.getText("errorMessage");
+                            MessageBox.error(`${msg}`);
+                        },
+                    });
+                });
             },
 
-            async onAddV2Record () {
-                const oBundle = this.getModel("i18n").getResourceBundle()
-                const oModel = this.getModel("ODataV2")
+            async onAddV2Record() {
+                const oBundle = this.getModel("i18n").getResourceBundle();
+                const oModel = this.getModel("ODataV2");
+                const { isEditMode, editableId } = this.getModel("EditMode");
+                
+                if (isEditMode) {
+                    const updatedData = {
+                        Name: this.byId("ProductName").getValue(),
+                        ReleaseDate: `/Date(${new Date(
+                            this.byId("ProductReleaseDate").getDateValue()
+                        ).getTime()})/`,
+                        DiscontinuedDate: `/Date(${new Date(
+                            this.byId("ProductDiscontinuedDate").getDateValue()
+                        ).getTime()})/`,
+                        Description: this.byId("ProductDescription").getValue(),
+                        Rating: this.byId("ProductRating").getValue(),
+                        Price: this.byId("ProductPrice").getValue(),
+                    };
+
+                    if (this.validateV2Record(updatedData) !== true) return;
+
+                    oModel.update(`/Products(${editableId})`, updatedData, {
+                        success: () => {
+                            MessageToast.show("Product updated successfully");
+
+                            this.getView().setModel(
+                                { isEditMode: false, editableId: 0 },
+                                "EditMode"
+                            );
+                                
+                            const fieldArr = [
+                                this.byId("ProductName"),
+                                this.byId("ProductReleaseDate"),
+                                this.byId("ProductDiscontinuedDate"),
+                                this.byId("ProductDescription"),
+                                this.byId("ProductRating"),
+                                this.byId("ProductPrice"),
+                            ];
+
+                            fieldArr.forEach((field) => field.setValue(""));
+                            
+                            this.AddV2RecordDialog.close();
+                        },
+                        error: () => {
+                            MessageBox.error("Product Update Failed");
+                        },
+                    });
+
+                    return;
+                }
                 const newEntityObj = {
                     Name: this.byId("ProductName").getValue(),
-                    ReleaseDate: `/Date(${ new Date(this.byId("ProductReleaseDate").getDateValue()).getTime() })/`,
-                    DiscontinuedDate: `/Date(${ new Date(this.byId("ProductDiscontinuedDate").getDateValue()).getTime() })/`,
+                    ReleaseDate: `/Date(${new Date(
+                        this.byId("ProductReleaseDate").getDateValue()
+                    ).getTime()})/`,
+                    DiscontinuedDate: `/Date(${new Date(
+                        this.byId("ProductDiscontinuedDate").getDateValue()
+                    ).getTime()})/`,
                     Description: this.byId("ProductDescription").getValue(),
                     Rating: this.byId("ProductRating").getValue(),
-                    Price: this.byId("ProductPrice").getValue()
-                }
+                    Price: this.byId("ProductPrice").getValue(),
+                };
 
-                if (!newEntityObj.Name) {
-                    MessageToast.show(oBundle.getText("pleaseEnterProductName"))
-                    return;
-                }
-                if (!newEntityObj.Description) {
-                    MessageToast.show(oBundle.getText("pleaseEnterProductDescription"))
-                    return;
-                }
-                if (newEntityObj.ReleaseDate === "/Date()/" ) {
-                    MessageToast.show(oBundle.getText("pleaseEnterProductReleaseDate"))
-                    return;
-                }
-                if (!newEntityObj.Rating) {
-                    MessageToast.show(oBundle.getText("pleaseEnterProductRating"))
-                    return;
-                }
-                if (!newEntityObj.Price) {
-                    MessageToast.show(oBundle.getText("pleaseEnterProductPrice"))
-                    return;
-                }
-                
+                if (this.validateV2Record(newEntityObj) !== true) return;
+
                 oModel.read("/Products", {
                     success: (oData) => {
-                        console.log(oData.results[0].ReleaseDate)
-                        const length = oData.results.length
-                        
+                        console.log(oData.results[0].ReleaseDate);
+                        const length = oData.results.length;
 
                         oModel.create("/Products", newEntityObj, {
                             success: (oData, oResponse) => {
-                                const msg = oBundle.getText("recordSuccessfullyAdded")
-                                MessageToast.show(`${msg}`)                                
-                            }
-                        }
-                    )
+                                const msg = oBundle.getText(
+                                    "recordSuccessfullyAdded"
+                                );
+                                MessageToast.show(`${msg}`);
+                            },
+                        });
                         oModel.submitChanges();
 
                         const fieldArr = [
@@ -303,21 +343,56 @@ sap.ui.define(
                             this.byId("ProductDiscontinuedDate"),
                             this.byId("ProductDescription"),
                             this.byId("ProductRating"),
-                            this.byId("ProductPrice")
-                        ]
+                            this.byId("ProductPrice"),
+                        ];
 
-                        fieldArr.forEach(field => field.setValue("")) 
+                        fieldArr.forEach((field) => field.setValue(""));
 
-                        this.AddV2RecordDialog.close()
-                    }
-                    ,
+                        this.AddV2RecordDialog.close();
+                    },
                     error: () => {
-                        MessageBox.error(`${oBundle.getText("errorMessage")}`)
+                        MessageBox.error(`${oBundle.getText("errorMessage")}`);
+                    },
+                });
+
+                console.log(newEntityObj);
+            },
+
+            async onOpenEditV2Record(oEvent) {
+                const elementId = oEvent.getSource().data("recordId");
+                this.getView().setModel({isEditMode: true, editableId: elementId}, "EditMode")
+                const oModel = this.getModel("ODataV2");
+
+                await this.onOpenAddV2RecordFragment();
+                await oModel.read(`/Products(${elementId})`, {
+                    success: (oData) => {
+                        const formatRD = () => {
+                            const date = new Date(oData.ReleaseDate).toDateString().substring(4).split("");
+                            date.splice(6, 0, ",");
+                            return date.join("")
+                        }
+
+                        const formatDD = () => {
+                            if (oData.DiscontinuedDate === "/Date(0)/") return;
+                                const date = new Date(oData.DiscontinuedDate).toDateString().substring(4).split("")
+                                date.splice(6, 0, ",")
+                                return date.join("") 
+                            
+                            }
+                            
+                        this.byId("ProductName").setValue(oData.Name);
+                        this.byId("ProductDescription").setValue(oData.Description);
+                        this.byId("ProductReleaseDate").setValue(formatRD());
+                        this.byId("ProductDiscontinuedDate").setValue(formatDD());
+                        this.byId("ProductRating").setValue(oData.Rating);
+                        this.byId("ProductPrice").setValue(oData.Price);
+                    },
+                    error: () => {
+                        MessageBox.error(this.i18n("productDataCanNotLoad")) 
                     }
-                }) 
-                
-                console.log(newEntityObj)
+                })
             }
+
         });
     }
 );
