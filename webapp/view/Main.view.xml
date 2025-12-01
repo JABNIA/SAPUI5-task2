@@ -3,6 +3,7 @@
     controllerName="project1.controller.Main"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
 >
     <Page>
         <IconTabBar
@@ -155,6 +156,9 @@
                             <Column>
                                 <Text text="{i18n>price}" />
                             </Column>
+                            <Column>
+                                <Text text="{i18n>actionColumn}" />
+                            </Column>
                         </columns>
                         <items>
                             <ColumnListItem>
@@ -175,6 +179,9 @@
                                 </HBox>
                                 <HBox>
                                     <Text text="{ODataV2>Price}" />
+                                </HBox>
+                                <HBox>
+                                    <Button text="edit" press=".onOpenEditV2Record" app:recordId="{ODataV2>ID}"/>
                                 </HBox>
                             </ColumnListItem>
                         </items>
