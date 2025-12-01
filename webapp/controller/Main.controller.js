@@ -5,7 +5,7 @@ sap.ui.define(
         "sap/ui/model/Filter",
         "sap/ui/model/FilterOperator",
         "sap/m/MessageToast",
-        "sap/m/MessageBox"
+        "sap/m/MessageBox",
     ],
     (BaseController, JSONModel, Filter, FilterOperator, MessageToast, MessageBox) => {
         "use strict";
@@ -198,6 +198,9 @@ sap.ui.define(
                 if (dyalogType === "AddRecord") {
                     this.AddRecordDialog.close();
                 }
+                if (dyalogType === "AddV2Record") {
+                    this.AddV2RecordDialog.close();
+                }
             },
 
             async onOpenAddRecordDialog() {
@@ -207,6 +210,15 @@ sap.ui.define(
 
                 this.AddRecordDialog.open();
             }, 
+
+            async onOpenAddV2RecordFragment() {
+                this.AddV2RecordDialog ??= await this.loadFragment({
+                    name: "project1.view.AddV2RecordDialog"
+                })
+
+                this.AddV2RecordDialog.open()
+            },
+
             onDeleteV2Record() {
                 const oTable = this.byId("productTable");
                 const itemIdArr = oTable.getSelectedItems().map(item => {
@@ -231,11 +243,80 @@ sap.ui.define(
                             .getResourceBundle();
                             const msg = oBundle.getText("errorMessage")
                             MessageBox.error(`${msg}`)
-                            MessageToast.show("something went wrong")
                         }
                     })
 
                 })
+            },
+
+            async onAddV2Record () {
+                const oBundle = this.getModel("i18n").getResourceBundle()
+                const oModel = this.getModel("ODataV2")
+                const newEntityObj = {
+                    Name: this.byId("ProductName").getValue(),
+                    ReleaseDate: `/Date(${ new Date(this.byId("ProductReleaseDate").getDateValue()).getTime() })/`,
+                    DiscontinuedDate: `/Date(${ new Date(this.byId("ProductDiscontinuedDate").getDateValue()).getTime() })/`,
+                    Description: this.byId("ProductDescription").getValue(),
+                    Rating: this.byId("ProductRating").getValue(),
+                    Price: this.byId("ProductPrice").getValue()
+                }
+
+                if (!newEntityObj.Name) {
+                    MessageToast.show(oBundle.getText("pleaseEnterProductName"))
+                    return;
+                }
+                if (!newEntityObj.Description) {
+                    MessageToast.show(oBundle.getText("pleaseEnterProductDescription"))
+                    return;
+                }
+                if (newEntityObj.ReleaseDate === "/Date()/" ) {
+                    MessageToast.show(oBundle.getText("pleaseEnterProductReleaseDate"))
+                    return;
+                }
+                if (!newEntityObj.Rating) {
+                    MessageToast.show(oBundle.getText("pleaseEnterProductRating"))
+                    return;
+                }
+                if (!newEntityObj.Price) {
+                    MessageToast.show(oBundle.getText("pleaseEnterProductPrice"))
+                    return;
+                }
+                
+                oModel.read("/Products", {
+                    success: (oData) => {
+                        console.log(oData.results[0].ReleaseDate)
+                        const length = oData.results.length
+                        
+
+                        oModel.create("/Products", newEntityObj, {
+                            success: (oData, oResponse) => {
+                                const msg = oBundle.getText("recordSuccessfullyAdded")
+                                MessageToast.show(`${msg}`)                                
+                            }
+                        }
+                    )
+                        oModel.submitChanges();
+
+                        const fieldArr = [
+                            this.byId("ProductName"),
+                            this.byId("ProductReleaseDate"),
+                            this.byId("ProductDiscontinuedDate"),
+                            this.byId("ProductDescription"),
+                            this.byId("ProductRating"),
+                            this.byId("ProductPrice")
+                        ]
+
+                        fieldArr.forEach(field => field.setValue("")) 
+
+                        this.AddV2RecordDialog.close()
+                    }
+                    ,
+                    error: () => {
+                        MessageBox.error(`${oBundle.getText("errorMessage")}`)
+                    }
+                }) 
+                
+                console.log(newEntityObj)
             }
         });
     }
