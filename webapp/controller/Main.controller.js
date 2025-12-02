@@ -457,7 +457,7 @@ sap.ui.define(
                         break;
                 }
 
-                const oSorter = new Sorter({path: sorterValue, descending: false})
+                const oSorter = new Sorter({path: sorterValue, descending: true})
 
                 oTable.getBinding("items").sort(oSorter)
             }
