@@ -19,7 +19,10 @@
             <Input
                 id="ProductName"
                 type="Text"
-                value="{V2DialogObjectModel>/record/Name}"
+                value="{
+                    path: 'ODataV2>Name',
+                    mode: 'sap.ui.model.BindingMode.OneWay'
+                }"
             />
             <Label
                 labelFor="ProductDescription"
@@ -28,7 +31,10 @@
             <Input
                 id="ProductDescription"
                 type="Text"
-                value="{V2DialogObjectModel>/record/Description}"
+                value="{
+                    path: 'ODataV2>Description',
+                    mode: 'sap.ui.model.BindingMode.OneWay'
+                }"
             />
             <Label
                 labelFor="ProductReleaseDate"
@@ -36,7 +42,13 @@
             />
             <DatePicker
                 id="ProductReleaseDate"
-                value="{V2DialogObjectModel>/record/ReleaseDate}"
+                value="{
+                path: 'ODataV2>ReleaseDate',
+                type: 'sap.ui.model.odata.type.DateTime',
+                mode: 'sap.ui.model.BindingMode.OneWay'
+
+                }"
+
             />
             <Label
                 labelFor="ProductDiscontinuedDate"
@@ -44,7 +56,12 @@
             />
             <DatePicker
                 id="ProductDiscontinuedDate"
-                value="{V2DialogObjectModel>/record/DiscontinuedDate}"
+                value="{
+                path: 'ODataV2>DiscontinuedDate',
+                type: 'sap.ui.model.odata.type.DateTime',
+                mode: 'sap.ui.model.BindingMode.OneWay'
+
+                }"
             />
             <Label
                 labelFor="ProductRating"
@@ -53,8 +70,10 @@
             <Input
                 id="ProductRating"
                 type="Number"
-                value="{V2DialogObjectModel>/record/Rating}"
-
+                value="{
+                    path: 'ODataV2>Rating',
+                    mode: 'sap.ui.model.BindingMode.OneWay'
+                }"
             />
             <Label
                 labelFor="ProductPrice"
@@ -63,7 +82,10 @@
             <Input
                 id="ProductPrice"
                 type="Number"
-                value="{V2DialogObjectModel>/record/Price}"
+                value="{
+                    path: 'ODataV2>Price',
+                    mode: 'sap.ui.model.BindingMode.OneWay'
+                }"
             />
         </HBox>
         <beginButton>

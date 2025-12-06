@@ -7,6 +7,8 @@ sap.ui.define(
         "sap/m/MessageToast",
         "sap/m/MessageBox",
         "sap/ui/model/Sorter",
+        "sap/ui/core/routing/HashChanger"
+
     ],
     (
         BaseController,
@@ -15,7 +17,8 @@ sap.ui.define(
         FilterOperator,
         MessageToast,
         MessageBox,
-        Sorter
+        Sorter,
+        HashChanger
     ) => {
         "use strict";
 
@@ -41,43 +44,25 @@ sap.ui.define(
                     });
                     this.getView().setModel(oGenreModel, "gernes");
                 });
-                const viewModel = new JSONModel({isVisible: false, id: ""});
+
+                // this is for example then ill put here other models too))
+
+                const viewModel = new JSONModel(
+                    {
+                        titleEdit: {isVisible: false, id: ""},
+                        editMode: false,
+                        selectedTab: "",
+                    }
+                );
 
                 this.getView().setModel(viewModel, "viewModel");
-
-                const oEditModel = new JSONModel({edit:{ isEditMode: false, editableId: 0 }});
-
-                this.getView().setModel(oEditModel, "EditMode");
-
-                const hashParameter = window.location.hash;
+                const hashParameter = HashChanger.getInstance();
+                console.log(hashParameter.getHash())
 
                 if(hashParameter) {
-                    const tabKey = hashParameter.substring(6);
-                    const oTabModel = new JSONModel({ selectedTab: tabKey });
-
-                    this.getView().setModel(
-                        oTabModel, "Selected"
-                    )
-                }else{
-                    const oTabModel = new JSONModel({ selectedTab: "" });
-
-                    this.getView().setModel(
-                        oTabModel, "Selected"
-                    )
+                    const tabKey = hashParameter.getHash().substring(4);
+                    viewModel.setProperty("/selectedTab", tabKey)
                 }
-
-                const oDialogModel= new JSONModel({
-                    record: {
-                        Name: "",
-                        Description: "",
-                        ReleaseDate: "",
-                        DiscontinuedDate: "",
-                        Rating: 0,
-                        Price: 0
-                    }
-                }) 
-
-                this.getView().setModel(oDialogModel, "V2DialogObjectModel")
             },
 
             onAddRecord() {
@@ -132,15 +117,14 @@ sap.ui.define(
                     return;
                 }
 
-                // this.byId("bookName").setValue("");
-                // this.byId("bookAuthor").setValue("");
-                // this.byId("bookGenre").setValue("");
-                // this.byId("bookReleaseDate").setValue("");
-                // this.byId("bookAvailableQuantity").setValue("");
+                this.byId("bookName").setValue("");
+                this.byId("bookAuthor").setValue("");
+                this.byId("bookGenre").setValue("");
+                this.byId("bookReleaseDate").setValue("");
+                this.byId("bookAvailableQuantity").setValue("");
 
-                // aBooks.push(oNewRow);
-                // oModel.setProperty("/books", aBooks);
-                // this.getView().setModel(oModel, "bookData");
+                aBooks.push(oNewRow);
+                oModel.setProperty("/books", aBooks);
                 this.AddRecordDialog.close();
             },
 
@@ -169,8 +153,6 @@ sap.ui.define(
                 const oModel = new JSONModel();
 
                 oModel.setProperty("/books", filteredBooks);
-
-                this.getView().setModel(oModel, "bookData");
 
                 this.oDeleteDialog.close();
             },
@@ -210,11 +192,11 @@ sap.ui.define(
                     .getObject().id;
 
                 this.getModel("viewModel").setProperty(
-                    "/isVisible",
-                    !this.getModel("viewModel").getProperty("/isVisible")
+                    "/titleEdit",{
+                        isVisible: !this.getModel("viewModel").getProperty("/titleEdit/isVisible"),
+                        id: bookId
+                    }
                 );
-                this.getModel("viewModel").setProperty("/id", bookId);
-                console.log(this.getModel("viewModel").getData());
             },
 
             async onOpenDeleteDialog() {
@@ -235,6 +217,9 @@ sap.ui.define(
                     this.AddRecordDialog.close();
                 }
                 if (dyalogType === "AddV2Record") {
+                    const oEditMode = this.getModel("viewModel");
+                    oEditMode.setProperty("/editMode", false)
+
                     this.AddV2RecordDialog.close();
                 }
             },
@@ -247,12 +232,35 @@ sap.ui.define(
                 this.AddRecordDialog.open();
             },
 
-            async onOpenAddV2RecordFragment() {
+            async onOpenAddV2RecordFragment(oEvent) {
+                const oContext = oEvent.getSource().getBindingContext("ODataV2");
+                const oEditMode = this.getModel("viewModel").getProperty("/editMode");
+
                 this.AddV2RecordDialog ??= await this.loadFragment({
                     name: "project1.view.AddV2RecordDialog",
                 });
 
-                this.AddV2RecordDialog.open();
+                if(oContext && oEditMode){
+                    this.AddV2RecordDialog.setBindingContext(oContext, "ODataV2")
+                    this.AddV2RecordDialog.open();
+                    return;
+                }
+
+                const oModel = this.getModel("ODataV2")
+                const oNewContext = oModel.createEntry("/Products", {properties: {
+                    Name: "", Description: "", ReleaseDate: null, DiscontinuedDate: null, Rating: 0, Price: 0
+                }})
+                oModel.submitChanges({
+                    success: () => console.log("entry created"),
+                    error: () => console.log("something went wrong")
+                }
+                )
+                oNewContext.created().then(() => {    
+                    this.AddV2RecordDialog.setBindingContext(oNewContext, "ODataV2")
+                    this.AddV2RecordDialog.open();
+                }
+                )
+                console.log(oNewContext);
             },
 
             onDeleteV2Record() {
@@ -284,14 +292,15 @@ sap.ui.define(
                 });
             },
 
-            async onAddV2Record() {
+            async onAddV2Record(oEvent) {
                 const oBundle = this.getModel("i18n").getResourceBundle();
                 const oModel = this.getModel("ODataV2");
-                const oEditModel = this.getModel("EditMode")
-                const {isEditMode, editableId} = oEditModel.getProperty("/edit");
+                const oEditModel = this.getModel("viewModel")
+                const {isEditMode} = oEditModel.getProperty("/editMode");
                 
                 if (isEditMode) {
-                    const oDialogObjectModel = this.getModel("V2DialogObjectModel");
+                    const oContext = oEvent.getSource().getBindingContext("ODataV2")
+
                     const updatedData = {
                         Name: this.byId("ProductName").getValue(),
                         ReleaseDate: `/Date(${new Date(
@@ -305,128 +314,49 @@ sap.ui.define(
                         Price: this.byId("ProductPrice").getValue(),
                     };
 
-                    if (this.validateV2Record(updatedData) !== true) return;
-
-                    oModel.update(`/Products(${editableId})`, updatedData, {
-                        success: () => {
-                            MessageToast.show("Product updated successfully");
-
-                            oEditModel.setProperty("/edit", {isEditMode: false, editableId: 0})
-                            this.getView().setModel(
-                                oEditModel,
-                                "EditMode"
-                            );
-                            oDialogObjectModel.setProperty("/record", {
-                                Name: "",
-                                Description: "",
-                                ReleaseDate: "",
-                                DiscontinuedDate: "",
-                                Rating: 0,
-                                Price: 0
-                            });
-
-                            this.getView().setModel(oDialogObjectModel, "V2DialogObjectModel")
-
-                            this.AddV2RecordDialog.close();
-                        },
-                        error: () => {
-                            MessageBox.error("Product Update Failed");
-                        },
-                    });
-
-                    return;
+                    if (this.validateV2Record(updatedData) !== true) {
+                        return
+                    }else {
+                        console.log("enters here")
+                        oModel.update(oContext.getPath(), updatedData)
+                        oEditModel.setProperty("/editMode", false)
+                        this.AddV2RecordDialog.close()
+                        return;
+                    };
                 }
                 const newEntityObj = {
                     Name: this.byId("ProductName").getValue(),
-                    ReleaseDate: `/Date(${new Date(
-                        this.byId("ProductReleaseDate").getDateValue()
-                    ).getTime()})/`,
-                    DiscontinuedDate: `/Date(${new Date(
-                        this.byId("ProductDiscontinuedDate").getDateValue()
-                    ).getTime()})/`,
+                    ReleaseDate: this.byId("ProductReleaseDate").getDateValue(),
+                    DiscontinuedDate:this.byId("ProductDiscontinuedDate").getDateValue(),
                     Description: this.byId("ProductDescription").getValue(),
                     Rating: this.byId("ProductRating").getValue(),
                     Price: this.byId("ProductPrice").getValue(),
                 };
 
                 if (this.validateV2Record(newEntityObj) !== true) return;
-
-                oModel.read("/Products", {
-                    success: (oData) => {
-                        console.log(oData.results[0].ReleaseDate);
-                        const length = oData.results.length;
-
-                        oModel.create("/Products", newEntityObj, {
-                            success: (oData, oResponse) => {
-                                const msg = oBundle.getText(
-                                    "recordSuccessfullyAdded"
-                                );
-                                MessageToast.show(`${msg}`);
-                            },
-                        });
-                        oModel.submitChanges();
-
-                        const fieldArr = [
-                            this.byId("ProductName"),
-                            this.byId("ProductReleaseDate"),
-                            this.byId("ProductDiscontinuedDate"),
-                            this.byId("ProductDescription"),
-                            this.byId("ProductRating"),
-                            this.byId("ProductPrice"),
-                        ];
-
-                        fieldArr.forEach((field) => field.setValue(""));
-
-                        this.AddV2RecordDialog.close();
-                    },
-                    error: () => {
-                        MessageBox.error(`${oBundle.getText("errorMessage")}`);
-                    },
-                });
-
-                console.log(newEntityObj);
+                
+                const oContext = oEvent.getSource().getBindingContext("ODataV2")
+                oContext.setProperty("Name", newEntityObj.Name)
+                oContext.setProperty("Description", newEntityObj.Description)
+                oContext.setProperty("ReleaseDate", newEntityObj.ReleaseDate)
+                oContext.setProperty("DiscontinuedDate", newEntityObj.DiscontinuedDate)
+                oContext.setProperty("Rating", newEntityObj.Rating)
+                oContext.setProperty("Price", newEntityObj.Price)
+                console.log(oContext.getProperty(""))
+                
+                this.AddV2RecordDialog.close();
             },
 
-            async onOpenEditV2Record(oEvent) {
-                const elementId = oEvent.getSource().data("recordId");
-                const editModeModel= this.getModel("EditMode");
-                editModeModel.setProperty("/edit", { isEditMode: true, editableId: elementId });
+            onOpenEditV2Record(oEvent) {
+                const oContext = oEvent.getSource().getBindingContext("ODataV2");
 
-                this.getView().setModel(editModeModel, "EditMode");
+                const editModeModel= this.getModel("viewModel");
+                editModeModel.setProperty("/editMode", true);
+
                 const oModel = this.getModel("ODataV2");
 
-                await oModel.read(`/Products(${elementId})`, {
-                    success: (oData) => {
-                        const formatDate = (date) => {
+                this.onOpenAddV2RecordFragment(oEvent)
 
-                            const formatedDate = new Date(date)
-                                .toDateString()
-                                .substring(4)
-                                .split("");
-                            formatedDate.splice(6, 0, ",");
-                            return formatedDate.join("");
-                        };
-
-                        const modelObject = {
-                            Name: oData.Name,
-                            Description: oData.Description,
-                            ReleaseDate: formatDate(oData.ReleaseDate),
-                            DiscontinuedDate: formatDate(oData.DiscontinuedDate),
-                            Rating: oData.Rating,
-                            Price: oData.Price
-                        }
-
-                        const oObjectModel = this.getModel("V2DialogObjectModel")
-                        oObjectModel.setProperty("/record", modelObject)
-                        this.getView().setModel(oObjectModel, "V2DialogObjectModel")
-                        console.log(oObjectModel.getProperty("/record"))
-                        
-                    },
-                    error: () => {
-                        MessageBox.error(this.i18n("productDataCanNotLoad"));
-                    },
-                });
-                await this.onOpenAddV2RecordFragment();
             },
 
             onInputSearch() {
@@ -489,11 +419,8 @@ sap.ui.define(
                     {
                         tabKey: sTabKey
                     })
-                const oModelSelect = this.getView().getModel("Selected");
-                const sTab = oModelSelect.getProperty("/selectedTab");
+                const oModelSelect = this.getView().getModel("viewModel");
                 oModelSelect.setProperty("/selectedTab", sTabKey);
-                
-                this.getView().setModel(oModelSelect, "Selected");
             }
         });
     }
