@@ -298,35 +298,20 @@ sap.ui.define(
                 const oEditModel = this.getModel("viewModel")
                 const {isEditMode} = oEditModel.getProperty("/editMode");
                 
+                const oContext = oEvent.getSource().getBindingContext("ODataV2")
                 if (isEditMode) {
-                    const oContext = oEvent.getSource().getBindingContext("ODataV2")
-
-                    // const updatedData = {
-                    //     Name: this.byId("ProductName").getValue(),
-                    //     ReleaseDate: `/Date(${new Date(
-                    //         this.byId("ProductReleaseDate").getDateValue()
-                    //     ).getTime()})/`,
-                    //     DiscontinuedDate: `/Date(${new Date(
-                    //         this.byId("ProductDiscontinuedDate").getDateValue()
-                    //     ).getTime()})/`,
-                    //     Description: this.byId("ProductDescription").getValue(),
-                    //     Rating: this.byId("ProductRating").getValue(),
-                    //     Price: this.byId("ProductPrice").getValue(),
-                    // };
-
-                    if (this.validateV2Record(updatedData) !== true) {
+                    if (this.validateV2Record(oContext.getProperty("")) !== true) {
                         return
                     }else {
-                        console.log("enters here")
                         oModel.update(oContext.getPath(), updatedData)
                         oEditModel.setProperty("/editMode", false)
                         this.AddV2RecordDialog.close()
                     };
                 }
-                
+                if (this.validateV2Record(oContext.getProperty("")) !== true) return
                 oModel.submitChanges({
-                    success: () => console.log("entry created"),
-                    error: () => console.log("something went wrong")
+                    success: () => MessageToast.show(oBundle.getText("recordSuccessfullyAdded")),
+                    error: () => MessageBox.error(oBundle.getText("errorMessage")),
                     })
                 
                 this.AddV2RecordDialog.close();

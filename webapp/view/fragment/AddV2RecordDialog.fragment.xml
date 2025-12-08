@@ -22,6 +22,8 @@
                 value="{
                     path: 'ODataV2>Name'
                 }"
+                valueState="{= ${ODataV2>Name} ? 'None' : 'Error' }"
+                valueStateText="{i18n>ProductNameRequired}"
             />
             <Label
                 labelFor="ProductDescription"
@@ -33,6 +35,8 @@
                 value="{
                     path: 'ODataV2>Description'
                 }"
+                valueState="{= ${ODataV2>Description} ? 'None' : 'Error' }"
+                valueStateText="{i18n>ProductDescriptionRequired}"
             />
             <Label
                 labelFor="ProductReleaseDate"
@@ -44,7 +48,8 @@
                 path: 'ODataV2>ReleaseDate',
                 type: 'sap.ui.model.odata.type.DateTime'
                 }"
-
+                valueState="{= ${ODataV2>ReleaseDate} ? 'None' : 'Error' }"
+                valueStateText="{i18n>ProductReleaseDateRequired}"
             />
             <Label
                 labelFor="ProductDiscontinuedDate"
@@ -67,6 +72,8 @@
                 value="{
                     path: 'ODataV2>Rating'
                 }"
+                valueState="{= ${ODataV2>Rating} ? 'None' : 'Error' }"
+                valueStateText="{i18n>ProductRatingRequired}"
             />
             <Label
                 labelFor="ProductPrice"
@@ -78,6 +85,8 @@
                 value="{
                     path: 'ODataV2>Price'
                 }"
+                valueState="{= ${ODataV2>Price} ? 'None' : 'Error' }"
+                valueStateText="{i18n>ProductPriceRequired}"
             />
         </HBox>
         <beginButton>
