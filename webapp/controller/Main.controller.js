@@ -207,6 +207,9 @@ sap.ui.define(
 
             onCloseDialog(oEvent) {
                 const dyalogType = oEvent.getSource().data("dialogType");
+                const oModel = this.getModel("ODataV2");
+                const oContext = oEvent.getSource().getBindingContext("ODataV2");
+                const resetPath = oContext ? oContext.getPath() : null;
 
                 if (dyalogType === "Delete") {
                     this.oDeleteDialog.close();
@@ -217,6 +220,7 @@ sap.ui.define(
                 if (dyalogType === "AddV2Record") {
                     const oEditMode = this.getModel("viewModel");
                     oEditMode.setProperty("/editMode", false)
+                    oModel.resetChanges([resetPath]);
 
                     this.AddV2RecordDialog.close();
                 }
