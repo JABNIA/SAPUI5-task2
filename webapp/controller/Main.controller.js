@@ -200,7 +200,7 @@ sap.ui.define(
 
             async onOpenDeleteDialog() {
                 this.oDeleteDialog ??= await this.loadFragment({
-                    name: "project1.view.fragmeent.DeleteDialog",
+                    name: "project1.fragment.DeleteDialog",
                 });
 
                 this.oDeleteDialog.open();
@@ -225,7 +225,7 @@ sap.ui.define(
 
             async onOpenAddRecordDialog() {
                 this.AddRecordDialog ??= await this.loadFragment({
-                    name: "project1.view.fragment.AddRecordDialog",
+                    name: "project1.fragment.AddRecordDialog",
                 });
 
                 this.AddRecordDialog.open();
@@ -236,7 +236,7 @@ sap.ui.define(
                 const oEditMode = this.getModel("viewModel").getProperty("/editMode");
 
                 this.AddV2RecordDialog ??= await this.loadFragment({
-                    name: "project1.view.fragment.AddV2RecordDialog",
+                    name: "project1.fragment.AddV2RecordDialog",
                 });
 
                 if(oContext && oEditMode){
