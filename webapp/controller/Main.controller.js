@@ -241,7 +241,8 @@ sap.ui.define(
 
             async onOpenAddV2RecordFragment(oEvent) {
                 const oContext = oEvent.getSource().getBindingContext("ODataV2");
-                const oEditMode = this.getModel("viewModel").getProperty("/editMode");
+                const oEditModel = this.getModel("viewModel")
+                const oEditMode = oEditModel.getProperty("/editMode");
 
                 this.AddV2RecordDialog ??= await this.loadFragment({
                     name: "project1.fragment.AddV2RecordDialog",
@@ -250,6 +251,8 @@ sap.ui.define(
                 if(oContext && oEditMode){
                     this.AddV2RecordDialog.setBindingContext(oContext, "ODataV2")
                     this.AddV2RecordDialog.open();
+                    oEditModel.setProperty("/editMode", false)
+
                     return;
                 }
                 
@@ -302,20 +305,9 @@ sap.ui.define(
 
             onAddV2Record(oEvent) {
                 const oBundle = this.getModel("i18n").getResourceBundle();
-                const oModel = this.getModel("ODataV2");
-                const oEditModel = this.getModel("viewModel")
-                const isEditMode = oEditModel.getProperty("/editMode");
-                
+                const oModel = this.getModel("ODataV2");                
                 const oContext = oEvent.getSource().getBindingContext("ODataV2")
-                if (isEditMode) {
-                    if (this.validateV2Record(oContext.getObject()) !== true) {
-                        return
-                    }else {
-                        oEditModel.setProperty("/editMode", false)
-                        this.AddV2RecordDialog.close()
-                        return;
-                    };
-                }
+
                 if (this.validateV2Record(oContext.getObject()) !== true) return
                 oModel.submitChanges({
                     success: () => MessageToast.show(oBundle.getText("recordSuccessfullyAdded")),
@@ -389,10 +381,9 @@ sap.ui.define(
             onTabPress(oEvent) {
                 
                 const sTabKey = oEvent.getParameters().key
-                const oRouter = this.getOwnerComponent().getRouter().navTo("tab", 
-                    {
-                        tabKey: sTabKey
-                    })
+                const oRouter = this.getOwnerComponent().getRouter()
+                const aNavigate = oRouter.navTo("tab", {tabKey: sTabKey})
+                
                 const oModelSelect = this.getView().getModel("viewModel");
                 oModelSelect.setProperty("/selectedTab", sTabKey);
             },
