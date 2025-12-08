@@ -20,8 +20,7 @@
                 id="ProductName"
                 type="Text"
                 value="{
-                    path: 'ODataV2>Name',
-                    mode: 'sap.ui.model.BindingMode.OneWay'
+                    path: 'ODataV2>Name'
                 }"
             />
             <Label
@@ -32,8 +31,7 @@
                 id="ProductDescription"
                 type="Text"
                 value="{
-                    path: 'ODataV2>Description',
-                    mode: 'sap.ui.model.BindingMode.OneWay'
+                    path: 'ODataV2>Description'
                 }"
             />
             <Label
@@ -44,9 +42,7 @@
                 id="ProductReleaseDate"
                 value="{
                 path: 'ODataV2>ReleaseDate',
-                type: 'sap.ui.model.odata.type.DateTime',
-                mode: 'sap.ui.model.BindingMode.OneWay'
-
+                type: 'sap.ui.model.odata.type.DateTime'
                 }"
 
             />
@@ -58,9 +54,7 @@
                 id="ProductDiscontinuedDate"
                 value="{
                 path: 'ODataV2>DiscontinuedDate',
-                type: 'sap.ui.model.odata.type.DateTime',
-                mode: 'sap.ui.model.BindingMode.OneWay'
-
+                type: 'sap.ui.model.odata.type.DateTime'
                 }"
             />
             <Label
@@ -71,8 +65,7 @@
                 id="ProductRating"
                 type="Number"
                 value="{
-                    path: 'ODataV2>Rating',
-                    mode: 'sap.ui.model.BindingMode.OneWay'
+                    path: 'ODataV2>Rating'
                 }"
             />
             <Label
@@ -83,8 +76,7 @@
                 id="ProductPrice"
                 type="Number"
                 value="{
-                    path: 'ODataV2>Price',
-                    mode: 'sap.ui.model.BindingMode.OneWay'
+                    path: 'ODataV2>Price'
                 }"
             />
         </HBox>

@@ -8,7 +8,6 @@ sap.ui.define(
         "sap/m/MessageBox",
         "sap/ui/model/Sorter",
         "sap/ui/core/routing/HashChanger"
-
     ],
     (
         BaseController,
@@ -45,8 +44,8 @@ sap.ui.define(
                     this.getView().setModel(oGenreModel, "gernes");
                 });
 
-                // this is for example then ill put here other models too))
-
+                
+                //add new model values here
                 const viewModel = new JSONModel(
                     {
                         titleEdit: {isVisible: false, id: ""},
@@ -201,7 +200,7 @@ sap.ui.define(
 
             async onOpenDeleteDialog() {
                 this.oDeleteDialog ??= await this.loadFragment({
-                    name: "project1.view.DeleteDialog",
+                    name: "project1.view.fragmeent.DeleteDialog",
                 });
 
                 this.oDeleteDialog.open();
@@ -226,7 +225,7 @@ sap.ui.define(
 
             async onOpenAddRecordDialog() {
                 this.AddRecordDialog ??= await this.loadFragment({
-                    name: "project1.view.AddRecordDialog",
+                    name: "project1.view.fragment.AddRecordDialog",
                 });
 
                 this.AddRecordDialog.open();
@@ -237,7 +236,7 @@ sap.ui.define(
                 const oEditMode = this.getModel("viewModel").getProperty("/editMode");
 
                 this.AddV2RecordDialog ??= await this.loadFragment({
-                    name: "project1.view.AddV2RecordDialog",
+                    name: "project1.view.fragment.AddV2RecordDialog",
                 });
 
                 if(oContext && oEditMode){
@@ -245,22 +244,23 @@ sap.ui.define(
                     this.AddV2RecordDialog.open();
                     return;
                 }
-
+                
                 const oModel = this.getModel("ODataV2")
-                const oNewContext = oModel.createEntry("/Products", {properties: {
+                
+                const aDeferedGroups = oModel.getDeferredGroups();
+                aDeferedGroups.push("myDeferedGroup");
+                oModel.setDeferredGroups(aDeferedGroups);
+                
+                const oNewContext = oModel.createEntry("/Products", {
+                    groupId: "myDeferedGroup",
+                    properties: {
                     Name: "", Description: "", ReleaseDate: null, DiscontinuedDate: null, Rating: 0, Price: 0
                 }})
-                oModel.submitChanges({
-                    success: () => console.log("entry created"),
-                    error: () => console.log("something went wrong")
-                }
-                )
-                oNewContext.created().then(() => {    
-                    this.AddV2RecordDialog.setBindingContext(oNewContext, "ODataV2")
-                    this.AddV2RecordDialog.open();
-                }
-                )
-                console.log(oNewContext);
+
+                this.AddV2RecordDialog.setBindingContext(oNewContext, "ODataV2")
+            
+            console.log(this.AddV2RecordDialog.getModel("ODataV2"))
+                this.AddV2RecordDialog.open();
             },
 
             onDeleteV2Record() {
@@ -301,18 +301,18 @@ sap.ui.define(
                 if (isEditMode) {
                     const oContext = oEvent.getSource().getBindingContext("ODataV2")
 
-                    const updatedData = {
-                        Name: this.byId("ProductName").getValue(),
-                        ReleaseDate: `/Date(${new Date(
-                            this.byId("ProductReleaseDate").getDateValue()
-                        ).getTime()})/`,
-                        DiscontinuedDate: `/Date(${new Date(
-                            this.byId("ProductDiscontinuedDate").getDateValue()
-                        ).getTime()})/`,
-                        Description: this.byId("ProductDescription").getValue(),
-                        Rating: this.byId("ProductRating").getValue(),
-                        Price: this.byId("ProductPrice").getValue(),
-                    };
+                    // const updatedData = {
+                    //     Name: this.byId("ProductName").getValue(),
+                    //     ReleaseDate: `/Date(${new Date(
+                    //         this.byId("ProductReleaseDate").getDateValue()
+                    //     ).getTime()})/`,
+                    //     DiscontinuedDate: `/Date(${new Date(
+                    //         this.byId("ProductDiscontinuedDate").getDateValue()
+                    //     ).getTime()})/`,
+                    //     Description: this.byId("ProductDescription").getValue(),
+                    //     Rating: this.byId("ProductRating").getValue(),
+                    //     Price: this.byId("ProductPrice").getValue(),
+                    // };
 
                     if (this.validateV2Record(updatedData) !== true) {
                         return
@@ -321,28 +321,13 @@ sap.ui.define(
                         oModel.update(oContext.getPath(), updatedData)
                         oEditModel.setProperty("/editMode", false)
                         this.AddV2RecordDialog.close()
-                        return;
                     };
                 }
-                const newEntityObj = {
-                    Name: this.byId("ProductName").getValue(),
-                    ReleaseDate: this.byId("ProductReleaseDate").getDateValue(),
-                    DiscontinuedDate:this.byId("ProductDiscontinuedDate").getDateValue(),
-                    Description: this.byId("ProductDescription").getValue(),
-                    Rating: this.byId("ProductRating").getValue(),
-                    Price: this.byId("ProductPrice").getValue(),
-                };
-
-                if (this.validateV2Record(newEntityObj) !== true) return;
                 
-                const oContext = oEvent.getSource().getBindingContext("ODataV2")
-                oContext.setProperty("Name", newEntityObj.Name)
-                oContext.setProperty("Description", newEntityObj.Description)
-                oContext.setProperty("ReleaseDate", newEntityObj.ReleaseDate)
-                oContext.setProperty("DiscontinuedDate", newEntityObj.DiscontinuedDate)
-                oContext.setProperty("Rating", newEntityObj.Rating)
-                oContext.setProperty("Price", newEntityObj.Price)
-                console.log(oContext.getProperty(""))
+                oModel.submitChanges({
+                    success: () => console.log("entry created"),
+                    error: () => console.log("something went wrong")
+                    })
                 
                 this.AddV2RecordDialog.close();
             },
@@ -421,7 +406,8 @@ sap.ui.define(
                     })
                 const oModelSelect = this.getView().getModel("viewModel");
                 oModelSelect.setProperty("/selectedTab", sTabKey);
-            }
+            },
+
         });
     }
 );
