@@ -301,16 +301,16 @@ sap.ui.define(
                 const oBundle = this.getModel("i18n").getResourceBundle();
                 const oModel = this.getModel("ODataV2");
                 const oEditModel = this.getModel("viewModel")
-                const {isEditMode} = oEditModel.getProperty("/editMode");
+                const isEditMode = oEditModel.getProperty("/editMode");
                 
                 const oContext = oEvent.getSource().getBindingContext("ODataV2")
                 if (isEditMode) {
                     if (this.validateV2Record(oContext.getProperty("")) !== true) {
                         return
                     }else {
-                        oModel.update(oContext.getPath(), updatedData)
                         oEditModel.setProperty("/editMode", false)
                         this.AddV2RecordDialog.close()
+                        return;
                     };
                 }
                 if (this.validateV2Record(oContext.getProperty("")) !== true) return
