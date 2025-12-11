@@ -5,7 +5,7 @@ sap.ui.define([
 
     return BaseController.extend("project1.controller.Product", {
         onInit() {
-            console.log("Page Check")
+            console.log(this.getOwnerComponent().getRouter())
         }
     })
 })

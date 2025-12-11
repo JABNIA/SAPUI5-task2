@@ -23,27 +23,17 @@ sap.ui.define(
 
         return BaseController.extend("project1.controller.Main", {
             onInit() {
-                const oBookModel = new JSONModel();
+                //JSONModel for books
+                const oBookModel = this.getOwnerComponent().getModel("Book");
+                //Genres for select control
+                const genres = new Set(
+                    oBookModel.getData().books.map((book) => book.genre)
+                );
 
-                oBookModel.loadData("model/books.json");
-
-                this.getView().setModel(oBookModel, "bookData");
-                
-                oBookModel.attachRequestCompleted(() => {
-                    const genres = new Set(
-                        oBookModel.getData().books.map((book) => book.genre)
-                    );
-
-                    const genresArray = Array.from(["All", ...genres]);
-
-                    const oGenreModel = new JSONModel({
-                        bookGenres: genresArray.map((genre) => {
-                            return { key: genre, text: genre };
-                        }),
-                    });
-                    this.getView().setModel(oGenreModel, "gernes");
-                });
-
+                const genresArray = Array.from(["All", ...genres]);
+                const genresObjArray =  genresArray.map((genre) => {
+                        return { key: genre, text: genre };
+                    })
                 
                 //add new model values here
                 const viewModel = new JSONModel(
@@ -51,10 +41,13 @@ sap.ui.define(
                         titleEdit: {isVisible: false, id: ""},
                         editMode: false,
                         selectedTab: "",
+                        genres: genresObjArray,
+                        newObject: {}
                     }
                 );
 
                 this.getView().setModel(viewModel, "viewModel");
+
                 const hashParameter = HashChanger.getInstance();
 
                 if(hashParameter) {
@@ -63,63 +56,26 @@ sap.ui.define(
                 }
             },
 
-            onAddRecord() {
-                const oModel = this.getModel("bookData");
+            _setNewEmptyObject() {
+                const newObjcet = {
+                    name: "",
+                    author: "",
+                    genre: "",
+                    releasedate: "",
+                    availablequantity: null
+                    };
+
+                return newObjcet;
+            },
+            
+            onAddRecord(oEvent) {
+                console.log(oEvent.getSource())
+                const oModel = this.getModel("Book");
                 const aBooks = oModel.getProperty("/books");
 
-                const oNewRow = {
-                    id: `B0${aBooks.length + 1}`,
-                    name: this.byId("bookName").getValue(),
-                    author: this.byId("bookAuthor").getValue(),
-                    genre: this.byId("bookGenre").getValue(),
-                    releasedate: this.byId("bookReleaseDate").getValue(),
-                    availablequantity: this.byId(
-                        "bookAvailableQuantity"
-                    ).getValue(),
-                };
+                const oNewRow = this.getModel("viewModel").getProperty("/newObject");
 
-                if (
-                    !oNewRow.name ||
-                    !oNewRow.author ||
-                    !oNewRow.genre ||
-                    !oNewRow.releasedate ||
-                    !oNewRow.availablequantity
-                ) {
-                    const oBundle = this.getView()
-                        .getModel("i18n")
-                        .getResourceBundle();
-
-                    if (oNewRow.name === "") {
-                        const msg = oBundle.getText("warningNameField");
-                        console.log(msg);
-                        MessageToast.show(`${msg}`);
-                    }
-                    if (oNewRow.author === "") {
-                        const msg = oBundle.getText("warningAuthorField");
-                        MessageToast.show(`${msg}`);
-                    }
-                    if (oNewRow.genre === "") {
-                        const msg = oBundle.getText("warningGenreField");
-                        MessageToast.show(`${msg}`);
-                    }
-                    if (oNewRow.releasedate === "") {
-                        const msg = oBundle.getText("warningReleaseDateField");
-                        MessageToast.show(`${msg}`);
-                    }
-                    if (oNewRow.availablequantity === "") {
-                        const msg = oBundle.getText(
-                            "warningAvailableQuantityField"
-                        );
-                        MessageToast.show(`${msg}`);
-                    }
-                    return;
-                }
-
-                this.byId("bookName").setValue("");
-                this.byId("bookAuthor").setValue("");
-                this.byId("bookGenre").setValue("");
-                this.byId("bookReleaseDate").setValue("");
-                this.byId("bookAvailableQuantity").setValue("");
+                if (this.validateJSONModelRecord(oNewRow) !== true) return;
 
                 aBooks.push(oNewRow);
                 oModel.setProperty("/books", aBooks);
@@ -128,11 +84,11 @@ sap.ui.define(
 
             onDeleteRecord() {
                 const oTable = this.getView().byId("bookTable");
-                const oBooks = this.getModel("bookData").getProperty("/books");
+                const oBooks = this.getModel("Book").getProperty("/books");
                 const oSelectedItemsId = oTable
                     .getSelectedItems()
                     .map((item) => {
-                        return item.getBindingContext("bookData").getObject()
+                        return item.getBindingContext("Book").getObject()
                             .id;
                     });
                 console.log(oSelectedItemsId);
@@ -148,10 +104,10 @@ sap.ui.define(
                     return !oSelectedItemsId.includes(book.id);
                 });
 
-                const oModel = new JSONModel();
+                const oModel = this.getOwnerComponent().getModel("Book")
 
                 oModel.setProperty("/books", filteredBooks);
-
+                oTable.removeSelections(true)
                 this.oDeleteDialog.close();
             },
 
@@ -186,7 +142,7 @@ sap.ui.define(
             onEditTitle(oEvent) {
                 const bookId = oEvent
                     .getSource()
-                    .getBindingContext("bookData")
+                    .getBindingContext("Book")
                     .getObject().id;
 
                 this.getModel("viewModel").setProperty(
@@ -236,6 +192,12 @@ sap.ui.define(
                     name: "project1.fragment.AddRecordDialog",
                 });
 
+                const oModel = this.getModel("viewModel");
+                oModel.setProperty("/newObject", this._setNewEmptyObject())
+                console.log(oModel.getProperty("/newObject"))
+
+
+                this.AddRecordDialog.bindElement({path: "/newObject", model: "viewModel"})
                 this.AddRecordDialog.open();
             },
 
@@ -385,7 +347,7 @@ sap.ui.define(
             onProductPage(oEvent) {
                 const oRow = oEvent.getSource();
                 const oRouter=this.getOwnerComponent().getRouter()
-                const sProductId = oRow.getBindingContext("ODataV2").getObject().ID
+                const sProductId = oRow.getBindingContext("ODataV2").getObject().ID``
                 
                 oRouter.navTo("Product", {
                     ProductId: window.encodeURIComponent(sProductId)

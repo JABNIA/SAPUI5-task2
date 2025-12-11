@@ -72,7 +72,7 @@
             },
             "Book": {
                 "type": "sap.ui.model.json.JSONModel",
-                "uri": "books.json"
+                "uri": "model/books.json"
             },
             "ODataV2": {
                 "type": "sap.ui.model.odata.v2.ODataModel",
