@@ -68,8 +68,7 @@ sap.ui.define(
                 return newObjcet;
             },
             
-            onAddRecord(oEvent) {
-                console.log(oEvent.getSource())
+            onAddRecord() {
                 const oModel = this.getModel("Book");
                 const aBooks = oModel.getProperty("/books");
 
@@ -91,7 +90,6 @@ sap.ui.define(
                         return item.getBindingContext("Book").getObject()
                             .id;
                     });
-                console.log(oSelectedItemsId);
 
                 if (oSelectedItemsId.length === 0) {
                     this.oDeleteDialog.close();
@@ -117,7 +115,6 @@ sap.ui.define(
                 const sSelectedGenre =
                     this.byId("genreSelect").getSelectedKey();
 
-                console.log(sSelectedGenre, sTitle);
                 if (sSelectedGenre && sSelectedGenre !== "All") {
                     aFilter.push(
                         new Filter(
@@ -194,8 +191,6 @@ sap.ui.define(
 
                 const oModel = this.getModel("viewModel");
                 oModel.setProperty("/newObject", this._setNewEmptyObject())
-                console.log(oModel.getProperty("/newObject"))
-
 
                 this.AddRecordDialog.bindElement({path: "/newObject", model: "viewModel"})
                 this.AddRecordDialog.open();
@@ -293,7 +288,6 @@ sap.ui.define(
                         caseSensitive: false
                     }))
                 }
-                console.log(aFilter)
                 const oList = this.byId("productTable");
                 const oBindign = oList.getBinding("items");
 
