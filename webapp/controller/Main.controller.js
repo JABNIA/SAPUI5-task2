@@ -398,16 +398,21 @@ sap.ui.define(
             onClickDeleteV4Record() {
                 const oTable = this.byId("V4dataTable");
                 const aSelectedItems = oTable.getSelectedItems();
-                aSelectedItems.forEach((item) => {
-                    const oContext = item.getBindingContext("ODataV4");
-                    oContext.delete("Deletion");
-                });
-
                 if(aSelectedItems.length === 0){
                     this.DeleteV4RecordDialog.close(); 
                     MessageBox.error(this.i18n("selectRecordToDelete"));
                     return;
                 }
+                
+                if(aSelectedItems.length > 1){
+                    aSelectedItems.forEach((item) => {
+                        const oContext = item.getBindingContext("ODataV4");
+                        oContext.delete("Deletion");
+                    });
+                }else{
+                    aSelectedItems[0].getBindingContext("ODataV4").delete();
+                }
+
 
                 const oModel = this.getOwnerComponent().getModel("ODataV4");
                 oModel
