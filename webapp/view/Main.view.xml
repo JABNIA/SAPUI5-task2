@@ -299,6 +299,9 @@
                             <Column>
                                 <Text text="{i18n>price}" />
                             </Column>
+                            <Column>
+                                <Text text="{i18n>actionColumn}" />
+                            </Column>
                         </columns>
                         <items>
                             <ColumnListItem>
@@ -322,6 +325,9 @@
                                 </HBox>
                                 <HBox>
                                     <Text text="{ODataV4>Price}" />
+                                </HBox>
+                                 <HBox>
+                                    <Button text="Edit Record" press=".onEditV4Record"/>
                                 </HBox>
                             </ColumnListItem>
                         </items>

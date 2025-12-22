@@ -448,10 +448,21 @@ sap.ui.define(
                 oModel.setProperty("/enableDeleteBtn", true)
             },
 
-            async onOpenAddV4RecordDialog() {
+            async onOpenAddV4RecordDialog(oEvent) {
                 this.addV4RecordDialog ??= await this.loadFragment({
                     name: "project1.fragment.AddV4RecordDialog"
                 })
+                const editMode = this.getModel("viewModel").getProperty("/editMode")
+                
+                if(editMode){
+                    console.log(editMode)
+                    const oContext = oEvent.getSource().getBindingContext("ODataV4")
+                    this.addV4RecordDialog.setBindingContext(oContext, "ODataV4")
+
+                    this.addV4RecordDialog.open()
+                    return;
+                }
+
                 const oTable = this.getView().byId("V4dataTable");
                 const oModel = oTable.getBinding("items");
 
@@ -463,7 +474,7 @@ sap.ui.define(
                     Rating: 0,
                     Price: 0
                 }, false, true)
-                console.log(oAddContext.getUpdateGroupId())
+                
                 this.addV4RecordDialog.setBindingContext(oAddContext, "ODataV4")
                 this.addV4RecordDialog.open()
             },
@@ -476,6 +487,15 @@ sap.ui.define(
 
                 oModel.submitBatch("newEntityCreation")
                 this.addV4RecordDialog.close()
+
+            },
+
+            onEditV4Record(oEvent) {
+                const viewModel = this.getModel("viewModel")
+
+                viewModel.setProperty("/editMode", true)
+
+                this.onOpenAddV4RecordDialog(oEvent)
 
             }
         });
