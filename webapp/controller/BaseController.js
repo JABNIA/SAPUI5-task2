@@ -51,7 +51,9 @@ sap.ui.define(
             }
             if (
               oControl.getLabels()[0].getText() ===
-              this.getI18n("EnterProductPrice")
+                this.getI18n("EnterProductPrice") ||
+              oControl.getLabels()[0].getText() ===
+                this.getI18n("enterAvailableQuantity")
             ) {
               if (Number(sValue) <= 0) {
                 bIsValid = false;
@@ -59,7 +61,7 @@ sap.ui.define(
             }
           }
         }
-
+        console.log(oControl.getId());
         if (!sValue) bIsValid = false;
 
         if (!bIsValid) {
@@ -94,7 +96,6 @@ sap.ui.define(
 
       onTableItemSelected(oEvent) {
         const aTableListItems = oEvent.getSource().getSelectedItems();
-        const oModel = this.getModel("ViewModel");
 
         if (!aTableListItems.length) {
           this._oViewModel.setProperty("/enableDeleteBtn", false);
